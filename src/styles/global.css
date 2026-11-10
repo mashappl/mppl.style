@@ -318,10 +318,10 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 .collage-b .spin-1 { left: 28.87%; top: 49.2%; rotate: 9deg; }
 .collage-b .spin-2 { left: 62.42%; top: 29.4%; rotate: 14deg; }
 .sheets:hover .sheet { translate: 0 -4px; }
-.study { margin-top: 0; max-width: 12.5em; }
+.study { margin-top: 32px; max-width: 12.5em; }
 .study-title { max-width: 9em; margin-bottom: 16px; }
 .collage-a .study { margin-left: 35.6%; }
-.collage-b .study { margin-left: 68.8%; margin-top: 10px; }
+.collage-b .study { margin-left: 68.8%; margin-top: 32px; }
 
 @media (max-width: 760px) {
   .site-head { grid-template-columns: 1fr auto; height: auto; padding: 24px 20px 0; row-gap: 10px; }
