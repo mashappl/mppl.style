@@ -1,0 +1,34 @@
+---
+import '../styles/global.css';
+interface Props { title?: string; description?: string }
+const { title, description = 'Mariya Popel — personal styling. Notes, homework and work in progress.' } = Astro.props;
+const fullTitle = title ? `${title} — mppl.style` : 'mppl.style';
+const path = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="site-header wrap">
+      <a href="/" class="logo">mppl<span>.style</span></a>
+      <nav>
+        <a href="/homework/" class:list={{ active: path.startsWith('/homework') }}>Homework</a>
+        <a href="/about/" class:list={{ active: path.startsWith('/about') }}>About</a>
+      </nav>
+    </header>
+    <main class="wrap"><slot /></main>
+    <footer class="site-footer wrap">
+      <span>© {new Date().getFullYear()} Mariya Popel</span>
+      <span>Personal styling, in progress</span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import HomeworkCard from '../components/HomeworkCard.astro';
+import { getHomework } from '../lib';
+const latest = (await getHomework()).slice(0, 3);
+---
+<Base>
+  <section class="hero">
+    <p class="eyebrow">Personal stylist in training</p>
+    <h1>Style, <em class="accent">studied</em>.</h1>
+    <p class="lede">I'm Mariya. I'm training as a personal stylist, and this is where I keep the work: course homework, colour studies, capsule wardrobes and looks I've put together.</p>
+  </section>
+
+  <div class="section-head">
+    <h2>Latest homework</h2>
+    <a href="/homework/">See all →</a>
+  </div>
+  {latest.length
+    ? <div class="grid">{latest.map((e) => <HomeworkCard entry={e} />)}</div>
+    : <p class="empty">Nothing here yet. The first assignment is on its way.</p>}
+</Base>

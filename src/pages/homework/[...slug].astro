@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getHomework } from '../../lib';
+
+export async function getStaticPaths() {
+  const entries = await getHomework();
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, module, date, summary, cover } = entry.data;
+const fmt = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={title} description={summary}>
+  <article class="article">
+    <header>
+      <p class="eyebrow">{module ? `${module} · ` : ''}{fmt}</p>
+      <h1 style="font-size:clamp(40px,6vw,64px)">{title}</h1>
+      {summary && <p class="lede">{summary}</p>}
+    </header>
+    {cover && <Image class="cover" src={cover} alt="" width={1440} />}
+    <div class="prose"><Content /></div>
+    <a class="back" href="/homework/">← All homework</a>
+  </article>
+</Base>

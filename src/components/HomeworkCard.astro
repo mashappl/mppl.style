@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+interface Props { entry: CollectionEntry<'homework'> }
+const { entry } = Astro.props;
+const { title, module, date, summary, cover } = entry.data;
+const fmt = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+<a class="card" href={`/homework/${entry.id}/`}>
+  <div class="thumb">
+    {cover ? <Image src={cover} alt="" width={600} /> : <span class="placeholder">{title.charAt(0)}</span>}
+  </div>
+  <div class="meta">{module ? `${module} · ` : ''}{fmt}</div>
+  <h3>{title}</h3>
+  {summary && <p>{summary}</p>}
+</a>
