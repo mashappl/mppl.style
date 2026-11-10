@@ -34,7 +34,6 @@ const year = new Date().getFullYear();
         {back
           ? <a href={href(lang, '/homework/')}>← {s.allHomeworks}</a>
           : <a href={href(lang, '/homework/')} aria-current={here === '/homework/' ? 'page' : undefined}>{s.count(count)}</a>}
-        <a href={href(lang, '/about/')} aria-current={here.startsWith('/about') ? 'page' : undefined}>{s.nav.about}</a>
         <a href={swapLang(lang, path)} hreflang={lang === 'en' ? 'uk' : 'en'} lang={lang === 'en' ? 'uk' : 'en'} aria-label={s.nav.otherLabel}>{s.nav.other}</a>
       </nav>
     </header>

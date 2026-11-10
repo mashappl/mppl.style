@@ -4,17 +4,18 @@
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import FormSheet from './FormSheet.astro';
-import { t, href, type Lang } from '../i18n';
+import { t, href, loc, type Lang } from '../i18n';
 interface Props { entry: CollectionEntry<'homework'>; lang: Lang; n: number; variant: 'a' | 'b' }
 const { entry, lang, n, variant } = Astro.props;
 const s = t[lang];
 const sheets = entry.data.sheets ?? (entry.data.cover ? [{ image: entry.data.cover, fit: 'contain' as const }] : []);
 const link = href(lang, `/homework/${entry.id}/`);
+const L = loc(entry.data, lang);
 ---
 <article class={`collage collage-${variant}`}>
-  <p class="label">{s.homeworkN} {String(n).padStart(2, '0')}<br />{entry.data.module}</p>
-  <a class="sheets" href={link} aria-label={entry.data.title}>
-    {sheets.length === 0 && entry.data.form && [0, 1, 2].map((pg) => <span class={`sheet sheet-${pg + 1}`}><FormSheet page={pg} /></span>)}
+  <p class="label">{s.homeworkN} {String(n).padStart(2, '0')}<br />{L.module}</p>
+  <a class="sheets" href={link} aria-label={L.title}>
+    {sheets.length === 0 && entry.data.form && [0, 1, 2].map((pg) => <span class={`sheet sheet-${pg + 1}`}><FormSheet page={pg} lang={lang} /></span>)}
     {sheets.map((sh, i) => (
       <span class={`sheet sheet-${i + 1}`}>
         <Image src={sh.image} alt="" width={720} class={sh.fit === 'cover' ? 'fit-cover' : 'fit-contain'} />
@@ -22,7 +23,7 @@ const link = href(lang, `/homework/${entry.id}/`);
     ))}
   </a>
   <div class="label study">
-    <p class="study-title">{entry.data.title}</p>
+    <p class="study-title">{L.title}</p>
     <a href={link}>{s.viewStudy} <span aria-hidden="true">↗</span></a>
   </div>
 </article>

@@ -1,12 +1,15 @@
 ---
 // A printed page of the client brief, drawn in HTML (used where a homework has no photos).
 import { BRIEF } from '../data/brief.js';
-interface Props { page: number }
-const { page } = Astro.props;
-const steps = BRIEF.steps.slice(page * 2, page * 2 + 2);
+import { BRIEF_EN } from '../data/brief.en.js';
+import type { Lang } from '../i18n';
+interface Props { page: number; lang?: Lang }
+const { page, lang = 'uk' } = Astro.props;
+const B = lang === 'en' ? BRIEF_EN : BRIEF;
+const steps = B.steps.slice(page * 2, page * 2 + 2);
 ---
-<div class="fsheet" aria-hidden="true" lang="uk">
-  <p class="fsheet-head"><span>{BRIEF.title}</span><span>{page + 1}/3</span></p>
+<div class="fsheet" aria-hidden="true" lang={lang}>
+  <p class="fsheet-head"><span>{B.title}</span><span>{page + 1}/3</span></p>
   {steps.map((st: any) => (
     <div class="fsheet-sec">
       <p class="fsheet-title">{st.kicker} / {st.title}</p>

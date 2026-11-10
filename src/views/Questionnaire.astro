@@ -1,41 +1,75 @@
 ---
-// Homework 01: the client brief. Questions live in src/data/brief.js; the form logic is
-// public/brief/app.js (wizard, autosave, photos, PDF/HTML/JSON downloads). This page only
-// provides the markup the script expects, in the site's editorial style.
+// Homework 01: the client brief. Questions live in src/data/brief.js (Ukrainian) and
+// src/data/brief.en.js (English); the form logic is public/brief/app.js (wizard, autosave,
+// photos, PDF/HTML/JSON downloads). This page provides the markup the script expects.
 import type { CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { t, href, type Lang } from '../i18n';
+import { t, href, loc, type Lang } from '../i18n';
 import { BRIEF } from '../data/brief.js';
+import { BRIEF_EN } from '../data/brief.en.js';
 interface Props { lang: Lang; entry: CollectionEntry<'homework'>; n: number }
 const { lang, entry, n } = Astro.props;
 const s = t[lang];
-const d = entry.data;
+const L = loc(entry.data, lang);
 const nn = String(n).padStart(2, '0');
-const words = d.title.toUpperCase().split(' ');
+const words = L.title.toUpperCase().split(' ');
 const mid = Math.ceil(words.length / 2);
-const ukNote = lang === 'en' ? 'The brief itself is in Ukrainian, written for my Ukrainian-speaking clients.' : '';
+const brief = lang === 'en' ? BRIEF_EN : BRIEF;
+
+const ui = {
+  uk: {
+    bar: 'анкета-бриф', progress: 'Прогрес заповнення', sections: 'Розділи анкети',
+    welcome: ['Розкажи про себе,', 'а я – про твій стиль'],
+    lede: 'Ця анкета – перший крок нашої роботи. Вона допоможе мені побачити, як ти живеш, що відчуваєш і чого насправді хочеш від гардеробу. Тоді рекомендації будуть про тебе, а не про картинку з Pinterest.',
+    facts: [['15–20 хв', '11 коротких розділів'], ['Чесно', 'немає правильних відповідей'], ['Приватно', 'бачу лише я']],
+    prepTitle: 'Що знадобиться',
+    prep: ['Сантиметрова стрічка для параметрів', '3 фото при денному світлі: анфас, профіль, обличчя', 'За бажанням – дошка Pinterest з образами, що подобаються'],
+    start: 'Почати', restart: 'Почати заново',
+    autosave: 'Відповіді автоматично зберігаються в цьому браузері – можна зупинитись і повернутись пізніше.',
+    prev: '← Назад', next: 'Далі →',
+    received: 'Бриф отримано', thanks: 'Дякую,', thanksFallback: 'що довірилась',
+    thanksLead: 'Я уважно прочитаю твої відповіді й напишу протягом 2 робочих днів, щоб домовитись про першу зустріч.',
+    copy: 'Збережи копію своїх відповідей', pdf: 'Зберегти як PDF', html: 'Завантажити HTML', json: 'Завантажити JSON',
+    pdfNote: 'PDF відкриє вікно друку – обери «Зберегти як PDF». HTML-файл містить і фото.',
+    edit: 'Повернутись і змінити відповіді', reset: 'Очистити анкету на цьому пристрої',
+  },
+  en: {
+    bar: 'client brief', progress: 'Progress', sections: 'Brief sections',
+    welcome: ['Tell me about yourself,', 'and I’ll tell you about your style'],
+    lede: 'This brief is the first step of our work together. It helps me see how you live, how you feel and what you really want from your wardrobe – so my advice is about you, not a picture on Pinterest.',
+    facts: [['15–20 min', '11 short sections'], ['Honest', 'there are no right answers'], ['Private', 'only I see it']],
+    prepTitle: 'What you’ll need',
+    prep: ['A soft measuring tape for your measurements', '3 photos in daylight: front, side, face', 'Optional – a Pinterest board of looks you like'],
+    start: 'Start', restart: 'Start over',
+    autosave: 'Your answers save automatically in this browser – you can stop and come back later.',
+    prev: '← Back', next: 'Next →',
+    received: 'Brief received', thanks: 'Thank you,', thanksFallback: 'for trusting me',
+    thanksLead: 'I’ll read your answers carefully and get back to you within 2 working days to arrange our first meeting.',
+    copy: 'Save a copy of your answers', pdf: 'Save as PDF', html: 'Download HTML', json: 'Download JSON',
+    pdfNote: 'PDF opens the print dialog – choose “Save as PDF”. The HTML file includes your photos.',
+    edit: 'Go back and edit your answers', reset: 'Clear the brief on this device',
+  },
+}[lang];
 ---
-<Base lang={lang} title={d.title} description={d.summary} back>
+<Base lang={lang} title={L.title} description={L.summary} back>
   <article class="study-page">
     <header class="st-intro st-grid">
       <a class="st-small" href={href(lang, '/homework/')}>←&nbsp;&nbsp;{s.allHomeworks}</a>
-      <p class="st-small">{s.homeworkN} {nn}{d.module && ` / ${d.module}`}</p>
+      <p class="st-small">{s.homeworkN} {nn}{L.module && ` / ${L.module}`}</p>
       <h1 class="st-title">{words.slice(0, mid).join(' ')}<br />{words.slice(mid).join(' ')}.</h1>
       <div>
-        {d.summary && <p class="st-lede">{d.summary}</p>}
-        {ukNote && <p class="st-lede brief-lang">{ukNote}</p>}
-        {d.meta && <dl class="st-meta">{d.meta.map((m) => <div><dt>{m.k}</dt><dd>{m.v}</dd></div>)}</dl>}
+        {L.summary && <p class="st-lede">{L.summary}</p>}
       </div>
     </header>
 
-    <div class="brief" lang="uk">
+    <div class="brief" lang={lang}>
       <div class="brief-bar st-pad">
-        <span class="st-small">анкета-бриф</span>
+        <span class="st-small">{ui.bar}</span>
         <div class="topbar__meta">
           <span class="savestate st-tiny-reg" id="savestate" aria-live="polite"></span>
           <span class="counter st-small" id="counter" aria-hidden="true"></span>
         </div>
-        <div class="progress" id="progress" role="progressbar" aria-label="Прогрес заповнення" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+        <div class="progress" id="progress" role="progressbar" aria-label={ui.progress} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
       </div>
 
       <section class="screen welcome st-grid" id="welcome" aria-labelledby="welcome-title">
@@ -45,61 +79,55 @@ const ukNote = lang === 'en' ? 'The brief itself is in Ukrainian, written for my
           <span class="wa-card wa-dress"><img src="/brief/intro/dress.jpg" alt="" width="800" height="1000" loading="lazy" /></span>
         </figure>
         <div class="welcome__text">
-          <h2 id="welcome-title" class="st-headline-lg"><span>Розкажи про себе,</span><span>а я – про твій стиль</span></h2>
-          <p class="st-lede">Ця анкета – перший крок нашої роботи. Вона допоможе мені побачити, як ти живеш, що відчуваєш і чого насправді хочеш від гардеробу. Тоді рекомендації будуть про тебе, а не про картинку з Pinterest.</p>
+          <h2 id="welcome-title" class="st-headline-lg">{ui.welcome.map((l) => <span>{l}</span>)}</h2>
+          <p class="st-lede">{ui.lede}</p>
           <ul class="facts">
-            <li><strong>15–20 хв</strong><span>11 коротких розділів</span></li>
-            <li><strong>Чесно</strong><span>немає правильних відповідей</span></li>
-            <li><strong>Приватно</strong><span>бачу лише я</span></li>
+            {ui.facts.map(([a, b]) => <li><strong>{a}</strong><span>{b}</span></li>)}
           </ul>
           <div class="prep">
-            <p class="st-small">Що знадобиться</p>
-            <ul>
-              <li>Сантиметрова стрічка для параметрів</li>
-              <li>3 фото при денному світлі: анфас, профіль, обличчя</li>
-              <li>За бажанням – дошка Pinterest з образами, що подобаються</li>
-            </ul>
+            <p class="st-small">{ui.prepTitle}</p>
+            <ul>{ui.prep.map((x) => <li>{x}</li>)}</ul>
           </div>
           <div class="welcome__actions">
-            <button class="btn btn--primary" id="start" type="button">Почати</button>
-            <button class="btn btn--ghost" id="restart" type="button" hidden>Почати заново</button>
+            <button class="btn btn--primary" id="start" type="button">{ui.start}</button>
+            <button class="btn btn--ghost" id="restart" type="button" hidden>{ui.restart}</button>
           </div>
-          <p class="note">Відповіді автоматично зберігаються в цьому браузері – можна зупинитись і повернутись пізніше.</p>
+          <p class="note">{ui.autosave}</p>
         </div>
       </section>
 
       <section class="screen formwrap st-grid" id="formwrap" hidden>
-        <nav class="steps" aria-label="Розділи анкети"><ol id="stepnav"></ol></nav>
+        <nav class="steps" aria-label={ui.sections}><ol id="stepnav"></ol></nav>
         <form id="brief" novalidate>
           <div id="step" class="step" aria-live="off"></div>
           <div class="formnav">
-            <button class="btn btn--ghost" type="button" id="prev">← Назад</button>
+            <button class="btn btn--ghost" type="button" id="prev">{ui.prev}</button>
             <span class="formnav__hint st-tiny-reg" id="navhint"></span>
-            <button class="btn btn--primary" type="submit" id="next">Далі →</button>
+            <button class="btn btn--primary" type="submit" id="next">{ui.next}</button>
           </div>
         </form>
       </section>
 
       <section class="screen thanks st-grid" id="thanks" hidden aria-labelledby="thanks-title" tabindex="-1">
         <div>
-          <p class="st-small">Бриф отримано</p>
-          <h2 id="thanks-title" class="st-headline-lg">Дякую, <em id="thanks-name">що довірилась</em></h2>
+          <p class="st-small">{ui.received}</p>
+          <h2 id="thanks-title" class="st-headline-lg">{ui.thanks} <em id="thanks-name">{ui.thanksFallback}</em></h2>
         </div>
         <div>
-          <p class="st-lede" id="thanks-lead">Я уважно прочитаю твої відповіді й напишу протягом 2 робочих днів, щоб домовитись про першу зустріч.</p>
+          <p class="st-lede" id="thanks-lead">{ui.thanksLead}</p>
           <div class="callout" id="thanks-callout" hidden></div>
           <div class="downloads">
-            <p class="st-small">Збережи копію своїх відповідей</p>
+            <p class="st-small">{ui.copy}</p>
             <div class="downloads__row">
-              <button class="btn btn--primary" type="button" id="dl-pdf">Зберегти як PDF</button>
-              <button class="btn btn--ghost" type="button" id="dl-html">Завантажити HTML</button>
-              <button class="btn btn--ghost" type="button" id="dl-json">Завантажити JSON</button>
+              <button class="btn btn--primary" type="button" id="dl-pdf">{ui.pdf}</button>
+              <button class="btn btn--ghost" type="button" id="dl-html">{ui.html}</button>
+              <button class="btn btn--ghost" type="button" id="dl-json">{ui.json}</button>
             </div>
-            <p class="note">PDF відкриє вікно друку – обери «Зберегти як PDF». HTML-файл містить і фото.</p>
+            <p class="note">{ui.pdfNote}</p>
           </div>
           <div class="thanks__actions">
-            <button class="btn btn--link" type="button" id="edit">Повернутись і змінити відповіді</button>
-            <button class="btn btn--link" type="button" id="reset">Очистити анкету на цьому пристрої</button>
+            <button class="btn btn--link" type="button" id="edit">{ui.edit}</button>
+            <button class="btn btn--link" type="button" id="reset">{ui.reset}</button>
           </div>
         </div>
       </section>
@@ -111,6 +139,6 @@ const ukNote = lang === 'en' ? 'The brief itself is in Ukrainian, written for my
       <p class="st-tiny-reg">mppl.style / {s.notebook} / {nn}</p>
     </footer>
   </article>
-  <script is:inline define:vars={{ BRIEF }}>window.BRIEF = BRIEF;</script>
+  <script is:inline define:vars={{ brief }}>window.BRIEF = brief;</script>
   <script is:inline src="/brief/app.js"></script>
 </Base>

@@ -12,6 +12,12 @@ export const swapLang = (lang: Lang, pathname: string) =>
 export const formatDate = (lang: Lang, d: Date) =>
   d.toLocaleDateString(lang === 'uk' ? 'uk-UA' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toLowerCase();
 
+/** Title, module and summary in the page language (falls back to English). */
+export function loc(data: { title: string; module?: string; summary?: string; uk?: { title?: string; module?: string; summary?: string } }, lang: Lang) {
+  const u = lang === 'uk' ? data.uk ?? {} : {};
+  return { title: u.title ?? data.title, module: u.module ?? data.module, summary: u.summary ?? data.summary };
+}
+
 /** All published homework, newest first. */
 export async function getHomework() {
   const all = await getCollection('homework', ({ data }) => !data.draft);

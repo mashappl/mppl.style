@@ -700,7 +700,7 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 .wa-shoes { left: 36%; top: 0; width: 54%; rotate: 4deg; z-index: 1; padding: 6%; }
 .wa-shoes img { object-fit: contain; mix-blend-mode: multiply; transform: rotate(-22deg) scale(1.4); }
 .wa-dress { left: 4%; top: 31%; width: 56%; rotate: -4deg; z-index: 3; padding: 5%; }
-.wa-dress img { object-fit: cover; mix-blend-mode: multiply; filter: contrast(1.05) saturate(0.85); }
+.wa-dress img { object-fit: cover; }
 .wa-cow { left: 30%; top: 60%; width: 60%; rotate: 3deg; z-index: 2; padding: 4%; }
 .wa-cow img { object-fit: cover; border-radius: 4px; }
 
@@ -709,3 +709,6 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
   .formwrap.st-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); column-gap: 6%; }
   .formwrap .step__intro { max-width: 60ch; }
 }
+
+/* a single homework on the home page sits in the centre */
+.collage:only-child { margin-left: auto; margin-right: auto; }
