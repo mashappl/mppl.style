@@ -36,7 +36,7 @@ Then open http://localhost:4321.
 3. Same page, **Custom domain: `mppl.style`**, then tick **Enforce HTTPS** once it's available.
 4. At your domain registrar, add DNS records for `mppl.style`:
    - `A` records → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-   - `CNAME` for `www` → `<your-github-username>.github.io`
+   - `CNAME` for `www` → `mashappl.github.io`
 
 ## Later: turning it into a portfolio
 
