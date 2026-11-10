@@ -13,6 +13,7 @@ const homework = defineCollection({
       summary: z.string().optional(),      // one line under the title
       cover: image().optional(),
       draft: z.boolean().default(false),   // true = hidden from the site
+      form: z.boolean().default(false),    // true = this homework is the client questionnaire (src/data/questionnaire.ts)
       notes: z.array(z.string()).max(3).optional(), // (simple layout) handwritten notes around the cover
 
       // Home page collage: up to 3 photos pinned together with safety pins.

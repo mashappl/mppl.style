@@ -1,0 +1,127 @@
+---
+// Homework 01: the client questionnaire. A real form, but nothing is sent: on submit it turns
+// the answers into a printable "client profile".
+import type { CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { t, href, type Lang } from '../i18n';
+import { questionnaire, formText } from '../data/questionnaire';
+interface Props { lang: Lang; entry: CollectionEntry<'homework'>; n: number }
+const { lang, entry, n } = Astro.props;
+const s = t[lang];
+const f = formText[lang];
+const d = entry.data;
+const nn = String(n).padStart(2, '0');
+const words = d.title.toUpperCase().split(' ');
+const mid = Math.ceil(words.length / 2);
+---
+<Base lang={lang} title={d.title} description={d.summary} back>
+  <article class="study-page">
+    <header class="st-intro st-grid">
+      <a class="st-small" href={href(lang, '/homework/')}>←&nbsp;&nbsp;{s.allHomeworks}</a>
+      <p class="st-small">{s.homeworkN} {nn}{d.module && ` / ${d.module}`}</p>
+      <h1 class="st-title">{words.slice(0, mid).join(' ')}<br />{words.slice(mid).join(' ')}.</h1>
+      <div>
+        {d.summary && <p class="st-lede">{d.summary}</p>}
+        {d.meta && <dl class="st-meta">{d.meta.map((m) => <div><dt>{m.k}</dt><dd>{m.v}</dd></div>)}</dl>}
+      </div>
+    </header>
+
+    <form class="qf st-pad" id="qf" novalidate>
+      <p class="qf-note st-tiny-reg">{f.note}</p>
+      {questionnaire.map((sec, i) => (
+        <fieldset class="qf-section">
+          <legend class="st-small">{String(i + 1).padStart(2, '0')} / {sec.title[lang]}</legend>
+          <div class="qf-fields">
+            {sec.fields.map((fl) => {
+              const name = `${sec.id}.${fl.id}`;
+              if (fl.type === 'text' || fl.type === 'email') return (
+                <label class={`qf-field ${'half' in fl && fl.half ? 'half' : ''}`}>
+                  <span class="qf-label">{fl.label[lang]}</span>
+                  <input type={fl.type} name={name} data-label={fl.label[lang]} placeholder={'hint' in fl && fl.hint ? fl.hint[lang] : ''} autocomplete={fl.type === 'email' ? 'email' : 'off'} />
+                </label>
+              );
+              if (fl.type === 'textarea') return (
+                <label class="qf-field">
+                  <span class="qf-label">{fl.label[lang]}</span>
+                  <textarea name={name} rows="3" data-label={fl.label[lang]} placeholder={fl.hint ? fl.hint[lang] : ''}></textarea>
+                </label>
+              );
+              if (fl.type === 'scale') return (
+                <div class="qf-field" role="group" aria-label={fl.label[lang]}>
+                  <span class="qf-label">{fl.label[lang]}</span>
+                  <div class="qf-scale">
+                    <span class="st-tiny">{fl.ends[0][lang]}</span>
+                    {[1, 2, 3, 4, 5].map((v) => <label class="qf-dot"><input type="radio" name={name} value={String(v)} data-label={fl.label[lang]} /><span>{v}</span></label>)}
+                    <span class="st-tiny">{fl.ends[1][lang]}</span>
+                  </div>
+                </div>
+              );
+              return (
+                <div class="qf-field" role="group" aria-label={fl.label[lang]}>
+                  <span class="qf-label">{fl.label[lang]}</span>
+                  <div class="qf-chips">
+                    {fl.options.map((o) => (
+                      <label class="qf-chip"><input type={fl.type === 'multi' ? 'checkbox' : 'radio'} name={name} value={o[lang]} data-label={fl.label[lang]} /><span>{o[lang]}</span></label>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </fieldset>
+      ))}
+      <button type="submit" class="qf-submit st-small">{f.submit} →</button>
+    </form>
+
+    <section class="qf-profile st-pad" id="qf-profile" hidden>
+      <div class="qf-profile-head">
+        <p class="st-small">{s.homeworkN} {nn} / {f.profile}</p>
+        <div class="qf-actions">
+          <button type="button" class="st-small" id="qf-edit">← {f.edit}</button>
+          <button type="button" class="st-small" id="qf-print">{f.print}</button>
+        </div>
+      </div>
+      <div class="qf-sheet" id="qf-out"></div>
+    </section>
+
+    <footer class="st-end st-pad">
+      <a class="st-small" href={href(lang, '/homework/')}>←&nbsp;&nbsp;{s.backAll}</a>
+      <p class="st-tiny-reg">mppl.style / {s.notebook} / {nn}</p>
+    </footer>
+  </article>
+
+  <script is:inline define:vars={{ sections: questionnaire.map((x) => ({ id: x.id, title: x.title[lang] })), empty: f.empty, profileTitle: f.profile }}>
+    const form = document.getElementById('qf');
+    const profile = document.getElementById('qf-profile');
+    const out = document.getElementById('qf-out');
+    const esc = (v) => v.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      let html = '';
+      sections.forEach((sec, i) => {
+        const fields = [...form.querySelectorAll(`[name^="${sec.id}."]`)];
+        const seen = new Set();
+        let rows = '';
+        fields.forEach((el) => {
+          if (seen.has(el.name)) return;
+          seen.add(el.name);
+          const vals = data.getAll(el.name).map(String).map((v) => v.trim()).filter(Boolean);
+          rows += `<div><dt>${esc(el.dataset.label)}</dt><dd>${vals.length ? esc(vals.join(', ')) : empty}</dd></div>`;
+        });
+        html += `<section><h3>${String(i + 1).padStart(2, '0')} / ${esc(sec.title)}</h3><dl>${rows}</dl></section>`;
+      });
+      const name = String(data.get('about.name') || '').trim();
+      out.innerHTML = `<h2>${esc(name || profileTitle)}</h2>${html}`;
+      form.hidden = true;
+      profile.hidden = false;
+      profile.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    document.getElementById('qf-edit').addEventListener('click', () => {
+      profile.hidden = true;
+      form.hidden = false;
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    document.getElementById('qf-print').addEventListener('click', () => window.print());
+  </script>
+</Base>

@@ -1,6 +1,7 @@
 ---
 import HomeworkEntry from '../../views/HomeworkEntry.astro';
 import Study from '../../views/Study.astro';
+import Questionnaire from '../../views/Questionnaire.astro';
 import { getHomework } from '../../i18n';
 export async function getStaticPaths() {
   const all = await getHomework();
@@ -11,4 +12,4 @@ const { entry, n } = Astro.props;
 const d = entry.data;
 const isStudy = Boolean(d.meta || d.start || d.notice || d.outfits || d.reflection);
 ---
-{isStudy ? <Study lang="en" entry={entry} n={n} /> : <HomeworkEntry lang="en" entry={entry} />}
+{d.form ? <Questionnaire lang="en" entry={entry} n={n} /> : isStudy ? <Study lang="en" entry={entry} n={n} /> : <HomeworkEntry lang="en" entry={entry} />}
