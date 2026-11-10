@@ -1,0 +1,116 @@
+---
+// Homework case study (from the Figma mockup "Homework 01 — The everyday wardrobe").
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { t, href, type Lang } from '../i18n';
+interface Props { lang: Lang; entry: CollectionEntry<'homework'>; n: number }
+const { lang, entry, n } = Astro.props;
+const s = t[lang];
+const d = entry.data;
+const { Content } = await render(entry);
+const hasBody = (entry.body ?? '').trim().length > 0;
+const nn = String(n).padStart(2, '0');
+// Number only the sections this entry actually has.
+let k = 0;
+const num = () => String(++k).padStart(2, '0');
+const titleLines = d.title.toUpperCase().split(' ');
+const mid = Math.ceil(titleLines.length / 2);
+---
+<Base lang={lang} title={d.title} description={d.summary} back>
+  <article class="study-page">
+    <header class="st-intro st-grid">
+      <a class="st-small" href={href(lang, '/homework/')}>←&nbsp;&nbsp;{s.allHomeworks}</a>
+      <p class="st-small">{s.homeworkN} {nn}{d.module && ` / ${d.module}`}</p>
+      <h1 class="st-title">{titleLines.slice(0, mid).join(' ')}<br />{titleLines.slice(mid).join(' ')}.</h1>
+      <div>
+        {d.summary && <p class="st-lede">{d.summary}</p>}
+        {d.meta && <dl class="st-meta">{d.meta.map((m) => <div><dt>{m.k}</dt><dd>{m.v}</dd></div>)}</dl>}
+      </div>
+    </header>
+
+    {d.start && (
+      <section class="st-start">
+        <p class="st-label st-start-label">{num()} / {s.sections.start}</p>
+        <div class="st-start-board">
+          {d.start.pieces.map((p, i) => (
+            <figure class={`st-piece st-piece-${i + 1}`}>
+              <span class={`st-sheet ${p.matte ? 'matte' : ''}`}><Image src={p.image} alt="" width={700} class={p.fit === 'cover' || p.matte ? 'fit-cover' : 'fit-contain'} /></span>
+              <figcaption class="st-cap">{p.label.map((l) => <span>{l}</span>)}{p.note && <span class="gap">{p.note}</span>}</figcaption>
+            </figure>
+          ))}
+          <figure class="st-portrait">
+            <span class="st-portrait-print"><Image src={d.start.portrait} alt="" width={1400} /></span>
+          </figure>
+        </div>
+        <div class="st-start-foot">
+          {d.start.caption && <p class="st-caption-lg">{d.start.caption.map((l) => <span>{l}</span>)}</p>}
+          {d.start.palette && (
+            <div class="st-palette">
+              <div class="st-swatches">{d.start.palette.map((c) => <span style={`background:${c.hex}`}></span>)}</div>
+              <p class="st-tiny">{d.start.palette.map((c) => c.name).join(' / ')}</p>
+            </div>
+          )}
+        </div>
+      </section>
+    )}
+
+    {d.notice && (
+      <section class="st-notice st-pad">
+        <p class="st-small">{num()} / {s.sections.notice}</p>
+        <h2 class="st-headline">{d.notice.headline}</h2>
+        <ol class="st-points">
+          {d.notice.points.map((p, i) => (
+            <li>
+              <p class="st-small">{String(i + 1).padStart(2, '0')} — {p.label}</p>
+              <h3>{p.title}</h3>
+              <p class="st-body">{p.body}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    {d.outfits && (
+      <section class="st-outfits st-pad">
+        <p class="st-small">{num()} / {s.sections.outfits}</p>
+        <h2 class="st-headline">{d.outfits.headline}</h2>
+        <div class="st-outfit-grid">
+          {d.outfits.items.map((o, i) => (
+            <figure class={`st-outfit st-outfit-${i + 1}`}>
+              <div class="st-mount">
+                <span class="st-mount-img"><Image src={o.image} alt="" width={1100} /></span>
+                <figcaption class="st-small">{o.caption}</figcaption>
+              </div>
+              {o.piece && (
+                <div class="st-side">
+                  <span class="st-sheet"><Image src={o.piece.image} alt="" width={400} class="fit-contain" /></span>
+                  <p class="st-tiny st-side-cap">{o.piece.label.map((l) => <span>{l}</span>)}{o.piece.note && <span class="gap">{o.piece.note}</span>}</p>
+                </div>
+              )}
+              <p class="st-small st-formula">{o.formula}</p>
+              <p class="st-body-lg">{o.body}</p>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {hasBody && <section class="st-pad st-prose prose"><Content /></section>}
+
+    {d.reflection && (
+      <section class="st-reflect st-pad">
+        <p class="st-small">{num()} / {s.sections.reflection}</p>
+        <div class="st-grid st-reflect-grid">
+          <h2 class="st-headline-lg">{d.reflection.headline.map((l) => <span>{l}</span>)}</h2>
+          <p class="st-body">{d.reflection.body}</p>
+        </div>
+      </section>
+    )}
+
+    <footer class="st-end st-pad">
+      <a class="st-small" href={href(lang, '/homework/')}>←&nbsp;&nbsp;{s.backAll}</a>
+      <p class="st-tiny-reg">mppl.style / {s.notebook} / {nn}</p>
+    </footer>
+  </article>
+</Base>

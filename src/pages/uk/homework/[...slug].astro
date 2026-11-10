@@ -1,8 +1,14 @@
 ---
 import HomeworkEntry from '../../../views/HomeworkEntry.astro';
+import Study from '../../../views/Study.astro';
 import { getHomework } from '../../../i18n';
 export async function getStaticPaths() {
-  return (await getHomework()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  const all = await getHomework();
+  const oldestFirst = [...all].reverse();
+  return all.map((entry) => ({ params: { slug: entry.id }, props: { entry, n: oldestFirst.indexOf(entry) + 1 } }));
 }
+const { entry, n } = Astro.props;
+const d = entry.data;
+const isStudy = Boolean(d.meta || d.start || d.notice || d.outfits || d.reflection);
 ---
-<HomeworkEntry lang="uk" entry={Astro.props.entry} />
+{isStudy ? <Study lang="uk" entry={entry} n={n} /> : <HomeworkEntry lang="uk" entry={entry} />}

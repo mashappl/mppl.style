@@ -1,22 +1,49 @@
 ---
+// Homework list: editorial index in the same system as the case studies.
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Scribble from '../components/Scribble.astro';
-import HomeworkFile from '../components/HomeworkFile.astro';
-import { t, getHomework, type Lang } from '../i18n';
+import { t, href, formatDate, getHomework, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const s = t[lang];
-const entries = await getHomework();
+const ordered = [...(await getHomework())].reverse(); // homework 01 first
+const tilts = [[-3, 1.5, 4], [2, -2, -4], [-1.5, 3, -3]];
 ---
 <Base lang={lang} title={s.nav.homework}>
-  <section class="page-top">
-    <header class="strip-head wrap">
-      <h1 class="mono display-s">{s.hw.title}</h1>
-      <Scribble text={s.hw.notes[2]} arrow="loop-down" class="strip-note1" />
+  <div class="study-page">
+    <header class="st-intro st-grid">
+      <p class="st-small">{s.descriptor}</p>
+      <p class="st-small">{s.count(ordered.length)}</p>
+      <h1 class="st-title">{s.index.title[0]}<br />{s.index.title[1]}</h1>
+      <p class="st-lede">{s.index.lede}</p>
     </header>
-    <p class="mono para wrap index-para">{s.hw.sub}</p>
-    {entries.length
-      ? <div class="strip strip-wrap">{entries.map((e, i) => <HomeworkFile entry={e} lang={lang} i={i} />)}</div>
-      : <p class="empty hand wrap">{s.hw.empty}</p>}
-  </section>
+
+    {ordered.length === 0 && <p class="st-pad st-small">{s.hw.empty}</p>}
+    <ol class="hw-index">
+      {ordered.map((e, i) => {
+        const link = href(lang, `/homework/${e.id}/`);
+        const pics = e.data.sheets ?? (e.data.cover ? [{ image: e.data.cover, fit: 'contain' as const }] : []);
+        const tl = tilts[i % tilts.length];
+        return (
+          <li class="hw-row st-grid">
+            <div class="hw-row-text">
+              <p class="st-small">{s.homeworkN} {String(i + 1).padStart(2, '0')}{e.data.module && ` / ${e.data.module}`}</p>
+              <h2 class="st-title"><a href={link}>{e.data.title}.</a></h2>
+              {e.data.summary && <p class="st-lede">{e.data.summary}</p>}
+              <p class="st-small hw-row-meta">{formatDate(lang, e.data.date)}</p>
+              <a class="st-small" href={link}>{s.viewStudy} ↗</a>
+            </div>
+            <a class="hw-stack" href={link} aria-label={e.data.title}>
+              {pics.map((p, j) => (
+                <span class={`hw-stack-sheet hw-stack-${j + 1}`} style={`rotate:${tl[j]}deg`}>
+                  <Image src={p.image} alt="" width={500} class={p.fit === 'cover' ? 'fit-cover' : 'fit-contain'} />
+                </span>
+              ))}
+              {pics.length > 1 && <img class="hw-stack-pin" src={`/pins/pin-${(i % 4) + 1}.svg`} alt="" width="110" height="28" />}
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
 </Base>

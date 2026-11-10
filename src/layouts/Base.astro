@@ -1,8 +1,8 @@
 ---
 import '../styles/global.css';
 import { t, href, swapLang, getHomework, type Lang } from '../i18n';
-interface Props { lang: Lang; title?: string; description?: string }
-const { lang, title, description } = Astro.props;
+interface Props { lang: Lang; title?: string; description?: string; back?: boolean }
+const { lang, title, description, back = false } = Astro.props;
 const s = t[lang];
 const fullTitle = title ? `${title} · mppl.style` : 'mppl.style';
 const path = Astro.url.pathname;
@@ -31,7 +31,9 @@ const year = new Date().getFullYear();
       <a class="site-name" href={href(lang, '/')} aria-label="mppl.style home">mppl.style</a>
       <span class="site-desc">{s.descriptor}</span>
       <nav class="site-nav" aria-label="main">
-        <a href={href(lang, '/homework/')} aria-current={here.startsWith('/homework') ? 'page' : undefined}>{s.count(count)}</a>
+        {back
+          ? <a href={href(lang, '/homework/')}>← {s.allHomeworks}</a>
+          : <a href={href(lang, '/homework/')} aria-current={here === '/homework/' ? 'page' : undefined}>{s.count(count)}</a>}
         <a href={href(lang, '/about/')} aria-current={here.startsWith('/about') ? 'page' : undefined}>{s.nav.about}</a>
         <a href={swapLang(lang, path)} hreflang={lang === 'en' ? 'uk' : 'en'} lang={lang === 'en' ? 'uk' : 'en'} aria-label={s.nav.otherLabel}>{s.nav.other}</a>
       </nav>

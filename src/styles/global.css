@@ -335,3 +335,152 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
   .collage-b .study { margin-left: 50%; }
   .label { font-size: 13px; line-height: 15px; }
 }
+
+/* ======================================================================
+   Homework case study (Figma: "Homework 01 — The everyday wardrobe")
+   Positions are % of the 1440px frame so the page scales with the window.
+   ====================================================================== */
+.study-page { font-family: var(--inter); color: var(--ink-figma); }
+.study-page a { color: inherit; text-decoration: none; }
+.study-page a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+.st-small, .st-label, .st-cap, .st-tiny, .st-title, .st-headline, .st-headline-lg, .st-points h3, .st-caption-lg, .st-tiny-reg { text-transform: uppercase; }
+.st-small { font-size: 11px; line-height: 1.4; font-weight: 700; }
+.st-label { font-size: 12px; line-height: 1.25; font-weight: 700; }
+.st-cap { display: grid; font-size: 12px; line-height: 1.25; font-weight: 700; }
+.st-cap .gap, .st-side-cap .gap { margin-top: 15px; }
+.st-tiny { display: grid; font-size: 10px; line-height: 1.25; font-weight: 700; }
+.st-tiny-reg { font-size: 10px; line-height: 1.4; }
+.st-title { font-size: 22px; line-height: 1.2; font-weight: 700; }
+.st-headline { font-size: 18px; line-height: 1.2; font-weight: 700; }
+.st-headline-lg { display: grid; font-size: 20px; line-height: 1.2; font-weight: 700; }
+.st-lede, .st-body { font-size: 14px; line-height: 1.4; font-weight: 400; }
+.st-body-lg { font-size: 15px; line-height: 1.4; font-weight: 400; }
+.st-pad { padding-left: 8.33%; padding-right: 8.33%; }
+.st-grid { display: grid; grid-template-columns: minmax(0, 660fr) minmax(0, 540fr); padding-left: 8.33%; padding-right: 8.33%; }
+
+/* intro */
+.st-intro { row-gap: 38px; padding-top: 30px; padding-bottom: 70px; }
+.st-lede { max-width: 430px; }
+.st-meta { margin-top: 36px; display: grid; font-size: 11px; line-height: 1.4; }
+.st-meta div { display: flex; }
+.st-meta dt { width: 9ch; flex: none; text-transform: uppercase; }
+
+/* 01 starting point */
+.st-start { position: relative; aspect-ratio: 1440 / 1410; }
+.st-start-label { position: absolute; left: 8.33%; top: 1.77%; }
+.st-start-board { position: absolute; inset: 0; }
+.st-sheet { position: relative; display: block; overflow: hidden; background: #f0ece2; border-radius: 7px; box-shadow: 2px 10px 14px -5px rgba(51, 43, 33, 0.13); }
+.st-sheet img { width: 100%; height: 100%; }
+.st-sheet .fit-contain { object-fit: contain; }
+.st-sheet .fit-cover { object-fit: cover; }
+.st-sheet.matte { padding: 3.73%; border-radius: 3px; box-shadow: 1px 5px 10px -4px rgba(31, 26, 20, 0.07); }
+.st-sheet.matte img { border-radius: 0; }
+.st-piece { position: absolute; }
+.st-piece .st-cap { position: absolute; width: 170px; }
+.st-piece-1 { left: 57.89%; top: 5.07%; width: 20.07%; z-index: 3; }
+.st-piece-1 .st-sheet { aspect-ratio: 289 / 330; rotate: 8deg; }
+.st-piece-1 .st-cap { left: 131.6%; top: 14.1%; }
+.st-piece-2 { left: 57.14%; top: 29.78%; width: 22.71%; z-index: 3; }
+.st-piece-2 .st-sheet { aspect-ratio: 327 / 376; rotate: -6deg; }
+.st-piece-2 .st-cap { left: 108.6%; top: 17.85%; width: 220px; }
+.st-piece-3 { left: 56.37%; top: 62.22%; width: 22.36%; z-index: 1; }
+.st-piece-3 .st-sheet { aspect-ratio: 322 / 344; rotate: 10deg; }
+.st-piece-3 .st-cap { left: 126.8%; top: 29.85%; width: 190px; }
+.st-portrait { position: absolute; left: 12.71%; top: 14.37%; width: 47.92%; z-index: 2; }
+.st-portrait-print { display: block; aspect-ratio: 690 / 884; padding: 2.61%; background: #f0ece2; border-radius: 16px; box-shadow: 1px 5px 10px -4px rgba(31, 26, 20, 0.07); rotate: -0.4deg; }
+.st-portrait-print img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+.st-start-foot { position: absolute; left: 12.64%; top: 84.4%; }
+.st-caption-lg { display: grid; font-size: 13px; line-height: 1.25; font-weight: 700; }
+.st-palette { margin-top: 48px; }
+.st-swatches { display: flex; gap: 8px; margin-bottom: 19px; }
+.st-swatches span { width: 32px; height: 24px; }
+
+/* 02 what i notice */
+.st-notice { padding-top: 35px; padding-bottom: 80px; }
+.st-notice .st-headline { margin-top: 26px; }
+.st-points { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 350px)); column-gap: 4.9%; margin-top: 50px; }
+.st-points h3 { margin: 20px 0 26px; font-size: 16px; line-height: 1.2; font-weight: 700; }
+
+/* 03 putting it together */
+.st-outfits { padding-top: 34px; padding-bottom: 60px; }
+.st-outfits .st-headline { margin-top: 30px; }
+.st-outfit-grid { display: grid; grid-template-columns: 43.33% 41.67%; column-gap: 11.4%; margin-top: 74px; align-items: start; }
+.st-outfit { position: relative; }
+.st-mount { position: relative; aspect-ratio: 520 / 585; background: #fff; box-shadow: 2px 8px 12px -4px rgba(51, 43, 33, 0.12); }
+.st-outfit-1 .st-mount { rotate: -2deg; margin-left: 1.9%; margin-right: -1.9%; }
+.st-outfit-2 .st-mount { rotate: 2deg; }
+.st-mount-img { position: absolute; left: 0; top: 0; width: 100%; height: 89.74%; overflow: hidden; }
+.st-mount-img img { width: 100%; height: 100%; object-fit: cover; }
+.st-mount figcaption { position: absolute; left: 3.46%; bottom: 3%; }
+.st-side { position: absolute; z-index: 2; }
+.st-side .st-sheet { background: #fff; border-radius: 0; }
+.st-outfit-1 .st-side { left: 81.5%; top: 23%; width: 35.4%; }
+.st-outfit-1 .st-side .st-sheet { aspect-ratio: 184 / 220; rotate: 7deg; }
+.st-outfit-1 .st-side-cap { position: absolute; left: 51%; top: -52%; width: 180px; }
+.st-outfit-2 .st-side { left: 73.1%; top: 46.4%; width: 35.2%; }
+.st-outfit-2 .st-side .st-sheet { aspect-ratio: 176 / 245; rotate: -6deg; }
+.st-outfit-2 .st-side-cap { position: absolute; left: 0; top: 112%; width: 190px; }
+.st-formula { margin-top: 34px; }
+.st-outfit .st-body-lg { margin-top: 14px; max-width: 560px; }
+
+/* body text (optional, from markdown) */
+.st-prose { max-width: none; padding-top: 30px; padding-bottom: 60px; }
+.st-prose > * { max-width: 66ch; }
+
+/* 04 reflection */
+.st-reflect { padding-top: 36px; }
+.st-reflect-grid { padding: 0; margin-top: 34px; }
+.st-reflect .st-body { max-width: 425px; margin-top: 7px; }
+.st-end { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding-top: 120px; padding-bottom: 10px; }
+.st-end .st-tiny-reg { margin-right: 8.6%; }
+
+@media (max-width: 900px) {
+  .st-grid { grid-template-columns: 1fr; padding-left: 20px; padding-right: 20px; }
+  .st-pad { padding-left: 20px; padding-right: 20px; }
+  .st-intro { row-gap: 18px; padding-bottom: 50px; }
+  .st-intro > :nth-child(2) { order: -1; }
+  .st-start { aspect-ratio: auto; padding: 0 20px 40px; }
+  .st-start-label, .st-start-board, .st-start-foot, .st-piece, .st-portrait, .st-piece .st-cap { position: static; width: auto; }
+  .st-start-label { margin-bottom: 26px; }
+  .st-start-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px 14px; }
+  .st-portrait { grid-column: 1 / -1; order: -1; margin-bottom: 10px; }
+  .st-piece .st-cap { margin-top: 18px; font-size: 10px; }
+  .st-start-foot { margin-top: 40px; }
+  .st-points { grid-template-columns: 1fr; row-gap: 40px; }
+  .st-points h3 { margin: 12px 0 12px; }
+  .st-outfit-grid { grid-template-columns: 1fr; row-gap: 80px; margin-top: 44px; }
+  .st-outfit .st-mount { width: 82%; }
+  .st-outfit-1 .st-side { left: 64%; }
+  .st-outfit-2 .st-side { left: 60%; }
+  .st-outfit-1 .st-side-cap { left: 0; top: 108%; }
+  .st-reflect-grid { row-gap: 20px; }
+  .st-end { flex-direction: column; padding-top: 70px; }
+}
+
+/* ---------- homework list ---------- */
+.hw-index { list-style: none; padding: 0; margin: 0 0 40px; }
+.hw-row { align-items: center; padding-top: 60px; padding-bottom: 60px; }
+.hw-row + .hw-row { border-top: 1px solid rgba(20, 20, 19, 0.12); }
+.hw-row-text { display: grid; gap: 18px; justify-items: start; align-content: center; }
+.hw-row-text .st-title { margin-top: 4px; }
+.hw-row-meta { opacity: 0.6; }
+.hw-stack { position: relative; display: block; aspect-ratio: 540 / 330; }
+.hw-stack-sheet { position: absolute; top: 4%; width: 36%; aspect-ratio: 4 / 5; overflow: hidden; background: #fff; filter: drop-shadow(2px 10px 7px rgba(51, 43, 33, 0.14)); transition: translate 0.5s var(--ease); }
+.hw-stack-sheet img { width: 100%; height: 100%; }
+.hw-stack-sheet .fit-contain { object-fit: contain; }
+.hw-stack-sheet .fit-cover { object-fit: cover; }
+.hw-stack-1 { left: 0; }
+.hw-stack-2 { left: 31%; top: 0; z-index: 1; }
+.hw-stack-3 { left: 62%; top: 7%; }
+.hw-stack-pin { position: absolute; z-index: 2; left: 25%; top: 32%; width: 17%; height: auto; rotate: 8deg; pointer-events: none; }
+.hw-stack:hover .hw-stack-sheet { translate: 0 -4px; }
+@media (max-width: 900px) {
+  .hw-row { row-gap: 30px; padding-top: 44px; padding-bottom: 44px; }
+}
+.study-page { overflow-x: clip; }
+@media (max-width: 900px) {
+  .st-outfit .st-mount { width: 78%; }
+  .st-outfit-1 .st-side, .st-outfit-2 .st-side { left: auto; right: 2%; width: 34%; }
+  .st-outfit-1 .st-side-cap, .st-outfit-2 .st-side-cap { left: 0; top: 106%; width: 100%; }
+  .st-formula { margin-top: 56px; }
+}

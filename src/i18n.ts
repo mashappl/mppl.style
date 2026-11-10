@@ -27,6 +27,11 @@ export const t = {
     count: (n: number) => `${String(n).padStart(2, '0')} homework${n === 1 ? '' : 's'}`,
     homeworkN: 'homework',
     viewStudy: 'view study',
+    allHomeworks: 'all homeworks',
+    backAll: 'back to all homeworks',
+    notebook: 'styling notebook',
+    sections: { start: 'the starting point', notice: 'what i notice', outfits: 'putting it together', reflection: 'reflection' },
+    index: { title: ['the', 'coursework.'], lede: 'Every assignment from my personal stylist course, one study at a time.' },
     hero: {
       lines: ['mppl.style', 'personal', 'style diary'],
       spec: [
@@ -82,6 +87,11 @@ export const t = {
     count: (n: number) => `${String(n).padStart(2, '0')} домашк${n === 1 ? 'а' : n > 1 && n < 5 ? 'и' : 'ок'}`,
     homeworkN: 'домашка',
     viewStudy: 'дивитись',
+    allHomeworks: 'усі домашки',
+    backAll: 'назад до всіх домашок',
+    notebook: 'зошит стиліста',
+    sections: { start: 'відправна точка', notice: 'що я помічаю', outfits: 'збираємо разом', reflection: 'рефлексія' },
+    index: { title: ['мої', 'домашки.'], lede: 'Кожне завдання з курсу персонального стиліста, по одному дослідженню.' },
     hero: {
       lines: ['mppl.style', 'щоденник', 'стилю'],
       spec: [

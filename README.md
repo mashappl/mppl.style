@@ -13,12 +13,11 @@ Then open http://localhost:4321.
 
 ## Add a homework assignment
 
-1. Copy `src/content/homework/_TEMPLATE.md` and rename it, e.g. `01-colour-analysis.md`.
-   The filename becomes the page address: `mppl.style/homework/01-colour-analysis/`.
-2. Put the images in `src/assets/homework/` (JPG/PNG straight from your phone is fine; the site resizes them).
-3. Fill in the title, date and text. Delete the `draft: true` line when it's ready to show.
-   - Want an outfit breakdown (full look + numbered pieces)? Fill in the `looks:` block in the template.
-     Cut-out PNGs (transparent background) look best.
+1. Copy `src/content/homework/_TEMPLATE.md` and rename it, e.g. `03-colour-analysis.md`.
+   The filename becomes the page address: `mppl.style/homework/03-colour-analysis/`.
+2. Make a folder for its photos, e.g. `src/assets/homework/03/`, and drop the photos in.
+3. Fill in the sections you need (intro, starting point, what I notice, putting it together, reflection).
+   Delete the ones you don't. Delete the `draft: true` line when it's ready.
 4. Commit and push. The site updates by itself in about a minute.
 
 ## Languages
