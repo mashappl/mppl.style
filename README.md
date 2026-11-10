@@ -54,6 +54,5 @@ with its own `/work/` page, the same way `homework` is set up.
 ## Texture credits
 
 Paper textures in `public/textures/` are from Unsplash (free under the Unsplash License):
-- `creased.jpg` — Plufow Le Studio, https://unsplash.com/photos/NxbuURLQqp8 (tinted red on the site)
-- `crumpled.jpg` — Compagnons, https://unsplash.com/photos/gKLEN-yYB6o
+- `rough.jpg` — Olga Thelavart, https://unsplash.com/photos/vS3idIiYxX0 (page background)
 - `fibre.jpg` — João Vítor Duarte, https://unsplash.com/photos/k4Lt0CjUnb0

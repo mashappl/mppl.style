@@ -3,7 +3,6 @@ import { render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Print from '../components/Print.astro';
 import Thumb from '../components/Thumb.astro';
-import Notebook from '../components/Notebook.astro';
 import Spec from '../components/Spec.astro';
 import Look from '../components/Look.astro';
 import { t, href, formatDate, type Lang } from '../i18n';
@@ -15,17 +14,15 @@ const { title, module, date, summary, cover, looks } = entry.data;
 const rows = [...(module ? [{ k: s.hw.spec.module, v: module }] : []), { k: s.hw.spec.date, v: formatDate(lang, date) }];
 ---
 <Base lang={lang} title={title} description={summary}>
-  <section class="ground-red page-top">
-    <article class="entry">
-      <a class="link-cta caps back" href={href(lang, '/homework/')}>← {s.hw.back}</a>
-      <Notebook binding="rings" class="entry-book">
-        <h1 class="wide entry-title">{title}</h1>
-        {summary && <p class="hand entry-sum">{summary}</p>}
-        <Spec rows={rows} />
-        {cover && <Print holder="clip" class="entry-cover" caption={entry.id + '.jpg'}><Thumb cover={cover} empty="" ratio="auto" /></Print>}
-        <div class="prose"><Content /></div>
-      </Notebook>
-      {looks?.map((look, n) => <Look look={look} n={n} label={s.look.title} />)}
+  <section class="page-top">
+    <article class="entry wrap">
+      <a class="link-cta mono back" href={href(lang, '/homework/')}>← {s.hw.back}</a>
+      <h1 class="mono display-s entry-title">{title}</h1>
+      {summary && <p class="hand entry-sum">{summary}</p>}
+      <Spec rows={rows} />
+      {cover && <Print pin="top" class="entry-cover"><Thumb cover={cover} empty="" ratio="auto" /></Print>}
+      <div class="prose"><Content /></div>
+      {looks?.map((look, n) => <Look look={look} n={n} label={s.look.title} detail={s.detail} />)}
     </article>
   </section>
 </Base>

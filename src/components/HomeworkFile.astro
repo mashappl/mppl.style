@@ -2,24 +2,19 @@
 import type { CollectionEntry } from 'astro:content';
 import Print from './Print.astro';
 import Thumb from './Thumb.astro';
-import Spec from './Spec.astro';
 import { href, formatDate, t, type Lang } from '../i18n';
 interface Props { entry: CollectionEntry<'homework'>; lang: Lang; i: number }
 const { entry, lang, i } = Astro.props;
 const s = t[lang].hw;
-const { title, module, date, summary, cover } = entry.data;
-const tilt = [-1.8, 1.4, -0.8, 2, -1.2][i % 5];
-// Mix of paper media, in turn.
-const holder = (['clip', 'stack', 'paperclip', 'tape'] as const)[i % 4];
-const rows = [
-  { k: s.spec.assignment, v: String(i + 1).padStart(2, '0') },
-  ...(module ? [{ k: s.spec.module, v: module }] : []),
-  { k: s.spec.date, v: formatDate(lang, date) },
-];
+const { title, module, date, cover } = entry.data;
+const tilt = [-2.2, 0.6, 2.4, -1.2, 1.6][i % 5];
+const shift = [0, -18, 6, -10, 12][i % 5];
 ---
-<a class={`hw-file hw-${holder}`} href={href(lang, `/homework/${entry.id}/`)} style={`--tilt:${tilt}deg`}>
-  <Print holder={holder} caption={entry.id + '.jpg'}><Thumb cover={cover} empty={s.nopic} /></Print>
-  <h3>{title}</h3>
-  {summary && <p class="hw-sum">{summary}</p>}
-  <Spec rows={rows} />
+<a class="hw-file" href={href(lang, `/homework/${entry.id}/`)} style={`--tilt:${tilt}deg; --shift:${shift}px`}>
+  <Print pin={i % 3 === 1 ? 'top' : 'none'}><Thumb cover={cover} empty={s.nopic} /></Print>
+  <p class="tag hw-tag">
+    <span>{title}</span>
+    {module && <span class="tag-gap">{module}</span>}
+    <span class="tag-gap">{formatDate(lang, date)}</span>
+  </p>
 </a>

@@ -31,7 +31,7 @@ Text, and images like this:
 
 ![Describe the image](../../assets/homework/01-moodboard.jpg)
 
-> A quote or tutor feedback shows up handwritten in blue pen.
+> A quote or tutor feedback shows up as a handwritten note.
 
 ## *Reflection*
 

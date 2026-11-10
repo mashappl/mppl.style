@@ -1,15 +1,18 @@
 ---
-// Handwritten note with a hand-drawn arrow.
-interface Props { text: string; arrow?: 'down-right' | 'down-left' | 'up-right' | 'left' | 'none'; class?: string; style?: string }
-const { text, arrow = 'down-right', class: cls = '', style } = Astro.props;
+// Handwritten caps note with a hand-drawn arrow.
+type Arrow = 'loop-down' | 'down' | 'up-right' | 'down-left' | 'down-right' | 'left' | 'none';
+interface Props { text: string; arrow?: Arrow; class?: string; style?: string }
+const { text, arrow = 'down', class: cls = '', style } = Astro.props;
 const paths: Record<string, string> = {
-  'down-right': 'M6 6 C30 4 52 18 56 44 M46 36 L56 46 L62 33',
-  'down-left': 'M58 6 C34 4 12 18 8 44 M2 33 L8 46 L18 36',
-  'up-right': 'M6 46 C26 46 48 34 56 8 M46 12 L57 6 L60 19',
-  left: 'M62 22 C44 30 24 30 6 20 M14 12 L5 20 L15 27',
+  'loop-down': 'M10 4 C40 10 54 34 40 50 C30 62 18 46 30 38 C44 28 58 54 56 86 M48 76 L56 88 L63 75',
+  down: 'M30 4 L30 80',
+  'up-right': 'M8 80 C24 66 40 44 56 14 M44 16 L57 12 L58 26',
+  'down-left': 'M58 6 C34 4 12 22 8 60 M2 48 L8 62 L18 51',
+  'down-right': 'M6 6 C30 4 52 22 56 60 M46 51 L56 62 L63 48',
+  left: 'M62 30 C44 38 24 38 6 28 M14 20 L5 28 L15 35',
 };
 ---
-<p class={`scribble-note hand ${cls}`} style={style}>
-  <span>{text}</span>
-  {arrow !== 'none' && <svg class={`arrow arrow-${arrow}`} viewBox="0 0 66 52" aria-hidden="true"><path d={paths[arrow]} /></svg>}
+<p class={`scribble ${cls}`} style={style}>
+  <span class="scribble-text">{text}</span>
+  {arrow !== 'none' && <svg class={`arrow arrow-${arrow}`} viewBox="0 0 66 92" aria-hidden="true"><path d={paths[arrow]} /></svg>}
 </p>

@@ -1,15 +1,15 @@
 ---
-// Outfit breakdown on a sheet of paper: the full look on a colour puddle + numbered pieces with handwritten notes.
+// Outfit breakdown sheet: the full look on a colour puddle, pieces as framed details with notes.
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import Notebook from './Notebook.astro';
+import Spec from './Spec.astro';
 type LookData = NonNullable<CollectionEntry<'homework'>['data']['looks']>[number];
-interface Props { look: LookData; n: number; label: string }
-const { look, n, label } = Astro.props;
-const num = (k: number) => `(${String(k + 1).padStart(2, '0')})`;
+interface Props { look: LookData; n: number; label: string; detail: string }
+const { look, n, label, detail } = Astro.props;
+const total = look.pieces.length;
 ---
-<Notebook binding="rings" class="look">
-  <div class="look-head caps"><span>{label} {String(n + 1).padStart(2, '0')}</span>{look.title && <span class="hand look-title">{look.title}</span>}</div>
+<section class="look sheet">
+  <header class="sheet-head mono"><span>{label} {String(n + 1).padStart(2, '0')}</span>{look.title && <span>{look.title}</span>}</header>
   <div class="look-grid" style={`--puddle:${look.colour}`}>
     <div class="look-hero">
       <span class="puddle" aria-hidden="true"></span>
@@ -18,10 +18,11 @@ const num = (k: number) => `(${String(k + 1).padStart(2, '0')})`;
     <ol class="look-pieces">
       {look.pieces.map((p, k) => (
         <li>
-          <p><span class="look-num">{num(k)}</span><span class="hand">{p.note}</span></p>
-          {p.image && <Image src={p.image} alt="" width={420} />}
+          {p.image && <div class="detail-frame"><Image src={p.image} alt="" width={420} /></div>}
+          <p class="mono">{detail} {k + 1}/{total}</p>
+          <p class="hand">{p.note}</p>
         </li>
       ))}
     </ol>
   </div>
-</Notebook>
+</section>

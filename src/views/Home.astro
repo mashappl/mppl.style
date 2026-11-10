@@ -1,8 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import Print from '../components/Print.astro';
-import Notebook from '../components/Notebook.astro';
+import Detail from '../components/Detail.astro';
 import Scribble from '../components/Scribble.astro';
+import Spec from '../components/Spec.astro';
 import Thumb from '../components/Thumb.astro';
 import HomeworkFile from '../components/HomeworkFile.astro';
 import { t, href, getHomework, type Lang } from '../i18n';
@@ -10,77 +11,68 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const s = t[lang];
 const entries = await getHomework();
-const latest = entries.slice(0, 4);
+const latest = entries.slice(0, 3);
 const fitCover = entries.find((e) => e.data.cover)?.data.cover;
-const swatches = ['#7a4a2b', '#b36a3c', '#c99a5b', '#8a8b4c', '#4f5e3a', '#9c4a3e', '#d9b48f', '#5b3a2e'];
+const swatches = ['#7a4a2b', '#b36a3c', '#c99a5b', '#8a8b4c', '#4f5e3a', '#9c4a3e', '#d9b48f', '#5b3a2e', '#6d6a3c'];
 const year = new Date().getFullYear();
 ---
 <Base lang={lang}>
-  <section class="ground-red hero">
-    <div class="hero-stage">
-      <div class="hero-stack">
-        <Print holder="stack" class="hero-print">
-          <Thumb cover={fitCover} empty={s.fit.empty} ratio="3 / 2" />
-        </Print>
-        <Scribble text={s.hero.note} arrow="down-left" class="hero-note" />
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 class="mono display">{s.hero.lines.map((l) => <span>{l}</span>)}</h1>
+        <Spec rows={[...s.hero.spec]} />
+        <a class="link-cta mono" href={href(lang, '/homework/')}>{s.hero.cta} →</a>
       </div>
 
-      <div class="hero-title">
-        <h1 class="wide">{s.hero.title}</h1>
-        <p class="caps">{s.hero.meta}</p>
-        <p class="caps">{year}</p>
-        <a class="link-cta caps" href={href(lang, '/homework/')}>{s.hero.cta} →</a>
+      <div class="hero-board">
+        <Scribble text={s.hero.note} arrow="loop-down" class="hero-note" />
+        <Print class="hero-print"><Thumb cover={fitCover} empty={s.fit.empty} ratio="4 / 5" /></Print>
+        <Detail label={`${s.detail} 1/2`} leader="right" class="hero-d1">
+          <div class="palette">{swatches.map((c) => <span style={`background:${c}`}></span>)}</div>
+        </Detail>
+        <Detail label={`${s.detail} 2/2`} leader="left" class="hero-d2">
+          <div class="capsule">
+            <p class="mono">{s.capsule.title}</p>
+            <ul>{s.capsule.items.map((it) => <li class="hand">{it}</li>)}</ul>
+          </div>
+        </Detail>
+        <Scribble text={s.palette.name} arrow="up-right" class="hero-note2" />
       </div>
-
-      <Print holder="paperclip" class="hero-palette" caption={s.palette.note}>
-        <div class="palette">{swatches.map((c) => <span style={`background:${c}`}></span>)}</div>
-        <p class="hand palette-name">{s.palette.name}</p>
-      </Print>
-
-      <Notebook binding="spiral" class="hero-capsule">
-        <p class="caps nb-title">{s.capsule.title}</p>
-        <ul class="ticks">{s.capsule.items.map((it) => <li class="hand">{it}</li>)}</ul>
-      </Notebook>
-
-      <p class="corner corner-l caps"><span>{s.corner[0]}</span><span>{s.corner[1]}</span></p>
     </div>
   </section>
 
-  <section class="ground-crumple hw-section">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 class="wide">{s.hw.title}</h2>
-        <p class="caps">{s.hw.sub}</p>
-        <Scribble text={s.hw.note} arrow="down-right" class="sec-note" />
-      </div>
-      {latest.length
-        ? <div class="hw-grid">{latest.map((e, i) => <HomeworkFile entry={e} lang={lang} i={i} />)}</div>
-        : <p class="empty hand">{s.hw.empty}</p>}
-      <a class="link-cta caps dark" href={href(lang, '/homework/')}>{s.hw.all} →</a>
+  <section class="strip-section">
+    <header class="strip-head wrap">
+      <h2 class="mono display-s">{s.hw.title}</h2>
+      <Scribble text={s.hw.notes[0]} arrow="loop-down" class="strip-note1" />
+    </header>
+    {latest.length
+      ? <div class="strip">{latest.map((e, i) => <HomeworkFile entry={e} lang={lang} i={i} />)}</div>
+      : <p class="empty hand wrap">{s.hw.empty}</p>}
+    <div class="strip-foot wrap">
+      <Scribble text={s.hw.notes[1]} arrow="up-right" class="strip-note2" />
+      <p class="mono para">{s.hw.sub}</p>
+      <a class="link-cta mono" href={href(lang, '/homework/')}>{s.hw.all} →</a>
     </div>
   </section>
 
-  <section class="ground-red plan">
-    <div class="wrap">
-      <Notebook binding="rings" class="plan-book">
-        <div class="plan-head">
-          <h2 class="wide">{s.plan.title}</h2>
-          <Scribble text={s.plan.note} arrow="down-right" class="plan-note" />
-        </div>
-        <ol class="plan-list">
-          {s.plan.cards.map((c, i) => (
-            <li>
-              <span class="caps plan-num">({String(i + 1).padStart(2, '0')})</span>
-              <h3 class="caps">{c.title}</h3>
-              <p>{c.body}</p>
-            </li>
-          ))}
-        </ol>
-      </Notebook>
-    </div>
+  <section class="plan wrap">
+    <p class="tag plan-quote">{s.plan.quote.map((l) => <span>{l}</span>)}<span class="tag-gap">{year}</span></p>
+    <Scribble text={s.plan.note} arrow="down-right" class="plan-note" />
+    <ol class="plan-list">
+      {s.plan.cards.map((c, i) => (
+        <li style={`--drop:${[0, 90, 30][i]}px`}>
+          <span class="mono plan-num">({String(i + 1).padStart(2, '0')})</span>
+          <p class="tag">{c.title.map((l) => <span>{l}</span>)}</p>
+          <p class="plan-body">{c.body}</p>
+        </li>
+      ))}
+    </ol>
   </section>
 
-  <section class="ground-red close">
-    <p class="wide close-text">{s.close.l1}<span class="hand">{s.close.l2}</span></p>
+  <section class="close wrap">
+    <p class="tag close-quote">{s.close.lines.map((l) => <span>{l}</span>)}</p>
+    <p class="hand close-xx">{s.close.note}</p>
   </section>
 </Base>

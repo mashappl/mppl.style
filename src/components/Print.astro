@@ -1,34 +1,18 @@
 ---
-// A physical photo print on paper. Holders: silver binder clip, paperclip, tape, or a stack of old prints.
-interface Props { holder?: 'clip' | 'paperclip' | 'tape' | 'stack'; caption?: string; hand?: string; class?: string; style?: string }
-const { holder = 'stack', caption, hand, class: cls = '', style } = Astro.props;
+// A loose photo print. Optional safety pin.
+interface Props { pin?: 'top' | 'side' | 'none'; class?: string; style?: string }
+const { pin = 'none', class: cls = '', style } = Astro.props;
 ---
-<figure class={`print print-${holder} ${cls}`} style={style}>
-  {holder === 'stack' && <><span class="sheet sheet-a" aria-hidden="true"></span><span class="sheet sheet-b" aria-hidden="true"></span><span class="sheet sheet-c" aria-hidden="true"></span></>}
-  {holder === 'clip' && (
-    <svg class="clip" viewBox="0 0 90 110" aria-hidden="true">
-      <defs>
-        <linearGradient id="steel" x1="0" x2="1">
-          <stop offset="0" stop-color="#7d7f82" /><stop offset=".25" stop-color="#f4f5f6" /><stop offset=".5" stop-color="#9ea1a5" /><stop offset=".75" stop-color="#e9eaec" /><stop offset="1" stop-color="#6f7174" />
-        </linearGradient>
-      </defs>
-      <path d="M30 70 L28 30 C27 12 63 12 62 30 L60 70" fill="none" stroke="url(#steel)" stroke-width="4.5" stroke-linecap="round" />
-      <path d="M38 70 L37 40 C37 30 53 30 53 40 L52 70" fill="none" stroke="url(#steel)" stroke-width="3.5" stroke-linecap="round" />
-      <path d="M12 66 L78 66 L84 104 L6 104 Z" fill="url(#steel)" />
-      <path d="M12 66 L78 66 L80 76 L10 76 Z" fill="#ffffff" opacity=".35" />
-      <path d="M6 104 L84 104" stroke="#55575a" stroke-width="2" />
+<figure class={`print ${cls}`} style={style}>
+  <div class="print-img"><slot /></div>
+  {pin !== 'none' && (
+    <svg class={`pin pin-${pin}`} viewBox="0 0 30 150" aria-hidden="true">
+      <defs><linearGradient id="pinmetal" x1="0" x2="1"><stop offset="0" stop-color="#7c7e81" /><stop offset=".45" stop-color="#eceef0" /><stop offset="1" stop-color="#85878a" /></linearGradient></defs>
+      <path d="M15 146 V26" stroke="url(#pinmetal)" stroke-width="2.4" stroke-linecap="round" />
+      <path d="M8 138 V30 C8 18 22 18 22 30 V44" fill="none" stroke="url(#pinmetal)" stroke-width="2.4" stroke-linecap="round" />
+      <circle cx="15" cy="148" r="4" fill="none" stroke="url(#pinmetal)" stroke-width="2" />
+      <rect x="5" y="24" width="20" height="26" rx="5" fill="url(#pinmetal)" />
+      <path d="M8 30 H22" stroke="#ffffff" stroke-width="1" opacity=".7" />
     </svg>
   )}
-  {holder === 'paperclip' && (
-    <svg class="paperclip" viewBox="0 0 40 110" aria-hidden="true">
-      <path d="M12 96 V20 a10 10 0 0 1 20 0 V86 a6 6 0 0 1 -12 0 V30" fill="none" stroke="#c4c6c9" stroke-width="3" stroke-linecap="round" />
-      <path d="M12 96 V20 a10 10 0 0 1 20 0 V86 a6 6 0 0 1 -12 0 V30" fill="none" stroke="#ffffff" stroke-width="1" stroke-linecap="round" opacity=".6" transform="translate(-.6 -.6)" />
-    </svg>
-  )}
-  {holder === 'tape' && <><span class="tape tape-l" aria-hidden="true"></span><span class="tape tape-r" aria-hidden="true"></span></>}
-  <div class="print-paper">
-    <div class="print-img"><slot /></div>
-    {caption && <figcaption class="print-cap">{caption}</figcaption>}
-    {hand && <p class="print-hand hand">{hand}</p>}
-  </div>
 </figure>

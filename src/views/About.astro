@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import Print from '../components/Print.astro';
 import Thumb from '../components/Thumb.astro';
-import Notebook from '../components/Notebook.astro';
 import Scribble from '../components/Scribble.astro';
 import { t, type Lang } from '../i18n';
 interface Props { lang: Lang }
@@ -10,16 +9,15 @@ const { lang } = Astro.props;
 const s = t[lang];
 ---
 <Base lang={lang} title={s.nav.about}>
-  <section class="ground-red about">
-    <div class="about-stage">
-      <div class="about-photo">
-        <Print holder="clip" hand={s.about.caption}><Thumb empty={s.about.photoEmpty} /></Print>
-      </div>
-      <Notebook binding="spiral" class="about-book">
-        <h1 class="wide">{s.about.title}</h1>
-        <Scribble text={s.about.note} arrow="none" class="about-hi" />
-        {s.about.p.map((p) => <p>{p}</p>)}
-      </Notebook>
+  <section class="page-top about wrap">
+    <div class="about-photo">
+      <Print pin="top"><Thumb empty={s.about.photoEmpty} /></Print>
+      <p class="tag about-tag"><span>{s.about.caption[0]}</span><span>{s.about.caption[1]}</span><span class="tag-gap">{s.about.caption[2]}</span></p>
+    </div>
+    <div class="about-copy">
+      <h1 class="mono display-s">{s.about.title}</h1>
+      <Scribble text={s.about.note} arrow="down-left" class="about-hi" />
+      {s.about.p.map((p) => <p class="mono para">{p}</p>)}
     </div>
   </section>
 </Base>

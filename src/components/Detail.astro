@@ -1,0 +1,9 @@
+---
+// A framed inset with a label like "DETAIL 1/2", optionally joined to its subject by a thin leader line.
+interface Props { label: string; leader?: 'left' | 'right' | 'none'; class?: string; style?: string }
+const { label, leader = 'none', class: cls = '', style } = Astro.props;
+---
+<figure class={`detail ${cls}`} style={style}>
+  <div class="detail-frame"><slot />{leader !== 'none' && <span class={`leader leader-${leader}`} aria-hidden="true"></span>}</div>
+  <figcaption class="mono">{label}</figcaption>
+</figure>
