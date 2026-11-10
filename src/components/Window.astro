@@ -1,0 +1,9 @@
+---
+// A little OS file window: grey title bar with a file name, content inside.
+interface Props { file: string; class?: string; drag?: boolean; style?: string }
+const { file, class: cls = '', drag = false, style } = Astro.props;
+---
+<figure class={`win ${cls}`} data-drag={drag ? '' : undefined} style={style}>
+  <figcaption class="win-bar"><span>{file}</span></figcaption>
+  <div class="win-body"><slot /></div>
+</figure>

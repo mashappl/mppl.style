@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Window from '../components/Window.astro';
+import Look from '../components/Look.astro';
+import { t, href, formatDate, type Lang } from '../i18n';
+interface Props { lang: Lang; entry: CollectionEntry<'homework'> }
+const { lang, entry } = Astro.props;
+const s = t[lang];
+const { Content } = await render(entry);
+const { title, module, date, summary, cover, looks } = entry.data;
+---
+<Base lang={lang} title={title} description={summary} ground="grid">
+  <section class="paper page-top">
+    <article class="entry">
+      <a class="back" href={href(lang, '/homework/')}>
+        <svg viewBox="0 0 10 16" aria-hidden="true"><path d="M8.5 1.5 2 8l6.5 6.5" /></svg>{s.hw.back}
+      </a>
+      <p class="hw-meta">{module ? `${module} · ` : ''}{formatDate(lang, date)}</p>
+      <h1 class="entry-title">{title}</h1>
+      {summary && <p class="entry-sum">{summary}</p>}
+      {cover && (
+        <div class="entry-cover"><span class="tape" aria-hidden="true"></span>
+          <Window file={`${entry.id}_cover.jpg`}><Image src={cover} alt="" width={1400} /></Window>
+        </div>
+      )}
+      <div class="prose"><Content /></div>
+      {looks?.map((look, n) => <Look look={look} n={n} slug={entry.id} />)}
+    </article>
+  </section>
+</Base>

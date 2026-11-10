@@ -1,18 +1,4 @@
 ---
-import Base from '../../layouts/Base.astro';
-import HomeworkCard from '../../components/HomeworkCard.astro';
-import { getHomework } from '../../lib';
-const entries = await getHomework();
+import HomeworkIndex from '../../views/HomeworkIndex.astro';
 ---
-<Base title="Homework" description="Assignments from my personal stylist course.">
-  <section class="hero">
-    <p class="eyebrow">Personal stylist course</p>
-    <h1>Homework</h1>
-    <p class="lede">Every assignment from the course, newest first.</p>
-  </section>
-  <div style="margin-top:56px">
-    {entries.length
-      ? <div class="grid">{entries.map((e) => <HomeworkCard entry={e} />)}</div>
-      : <p class="empty">No homework published yet.</p>}
-  </div>
-</Base>
+<HomeworkIndex lang="en" />

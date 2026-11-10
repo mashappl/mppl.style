@@ -1,0 +1,12 @@
+---
+interface Props { label: string; href: string; style?: string }
+const { label, href, style } = Astro.props;
+---
+<a class="folder" href={href} style={style}>
+  <svg viewBox="0 0 64 50" aria-hidden="true">
+    <path d="M2 8a4 4 0 0 1 4-4h16l5 5h31a4 4 0 0 1 4 4v3H2z" fill="#5aa7ee" />
+    <path d="M2 14a4 4 0 0 1 4-4h52a4 4 0 0 1 4 4v30a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#8cc6fb" />
+    <path d="M2 16h60" stroke="#b9dcfd" stroke-width="1.5" />
+  </svg>
+  <span>{label}</span>
+</a>

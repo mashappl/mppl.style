@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import Sky from '../components/Sky.astro';
+import Window from '../components/Window.astro';
+import Notes from '../components/Notes.astro';
+import Folder from '../components/Folder.astro';
+import HomeworkFile from '../components/HomeworkFile.astro';
+import { Image } from 'astro:assets';
+import { t, href, getHomework, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = t[lang];
+const entries = await getHomework();
+const latest = entries.slice(0, 3);
+const fitCover = entries.find((e) => e.data.cover)?.data.cover;
+const swatches = ['#7a4a2b', '#b36a3c', '#c99a5b', '#8a8b4c', '#4f5e3a', '#9c4a3e', '#d9b48f', '#5b3a2e'];
+---
+<Base lang={lang}>
+  <section class="hero">
+    <Sky />
+    <div class="hero-stage">
+      <h1 class="hero-title">
+        <span class="t-grot">{s.hero.l1}</span>
+        <span class="t-hl"><span class="t-serif">{s.hero.l2}</span>
+          <svg class="ring" viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true"><path d="M30 78C24 30 150 12 250 16c90 4 140 30 132 62-9 38-120 52-215 48C80 122 18 104 24 70 30 40 110 22 196 20" /></svg>
+        </span>
+      </h1>
+      <p class="hero-sub">{s.hero.sub}</p>
+      <a class="btn" href={href(lang, '/homework/')}>{s.hero.cta}</a>
+
+      <Window file={s.palette.file} class="c-palette taped" drag>
+        <div class="palette">
+          {swatches.map((c) => <span style={`background:${c}`}></span>)}
+        </div>
+        <p class="palette-name marker">{s.palette.name}</p>
+        <p class="palette-note">{s.palette.note}</p>
+      </Window>
+
+      <Window file={s.fit.file} class="c-fit taped" drag>
+        <div class="fit">
+          {fitCover ? <Image src={fitCover} alt="" width={600} /> : <span class="xerox"><span class="marker">{s.fit.empty}</span></span>}
+        </div>
+      </Window>
+
+      <Notes back={s.capsule.title} class="c-capsule" drag>
+        <ul class="checks">
+          {s.capsule.items.map((it) => (
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" /><path d="m6 10.3 2.6 2.6L14 7.4" /></svg>{it}</li>
+          ))}
+        </ul>
+      </Notes>
+
+      <div class="c-folders">
+        <Folder label={s.folders[0]} href={href(lang, '/homework/')} />
+        <Folder label={s.folders[1]} href={href(lang, '/homework/')} />
+        <Folder label={s.folders[2]} href={href(lang, '/about/')} />
+      </div>
+
+      <p class="stamp c-stamp" aria-hidden="true"><span>{s.stamp[0]}</span><span>{s.stamp[1]}</span></p>
+    </div>
+  </section>
+
+  <section class="paper hw-section">
+    <div class="wrap">
+      <h2 class="sec-title">
+        <span class="t-grot">{s.hw.h1}</span> <span class="t-hl"><span class="t-serif">{s.hw.h2}</span></span>
+        {latest.length > 0 && <span class="scribble marker" aria-hidden="true">{s.scribble}</span>}
+      </h2>
+      <p class="sec-sub">{s.hw.sub}</p>
+      {latest.length
+        ? <div class="hw-grid">{latest.map((e, i) => <HomeworkFile entry={e} lang={lang} i={i} />)}</div>
+        : <p class="empty marker">{s.hw.empty}</p>}
+      <a class="btn btn-ink" href={href(lang, '/homework/')}>{s.hw.all}</a>
+    </div>
+  </section>
+
+  <section class="night plan">
+    <div class="wrap">
+      <h2 class="sec-title on-dark">
+        <span class="t-grot">{s.plan.h1}</span> <span class="t-hl"><span class="t-serif">{s.plan.h2}</span></span>
+      </h2>
+      <div class="plan-board">
+        {s.plan.cards.map((c, i) => (
+          <Notes back={s.about.notes} class={`plan-note plan-note-${i}`}>
+            <h3><span class="t-hl-soft">{c.title}</span></h3>
+            <p>{c.body}</p>
+          </Notes>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="lime">
+    <p class="close"><span>{s.close.l1}</span><span>{s.close.l2}
+      <svg class="underline" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path d="M6 26C120 14 260 30 380 18s170 4 212 10" /></svg></span></p>
+  </section>
+
+  <script>
+    // Drag the desktop windows around (by their title bar). Purely for fun.
+    let z = 10;
+    document.querySelectorAll<HTMLElement>('[data-drag]').forEach((el) => {
+      const handle = el.querySelector<HTMLElement>('.win-bar, .notes-bar') ?? el;
+      let sx = 0, sy = 0, ox = 0, oy = 0;
+      handle.addEventListener('pointerdown', (e) => {
+        if (matchMedia('(max-width: 900px)').matches) return;
+        el.style.zIndex = String(++z);
+        el.classList.add('dragging');
+        sx = e.clientX; sy = e.clientY;
+        ox = parseFloat(el.dataset.x ?? '0'); oy = parseFloat(el.dataset.y ?? '0');
+        handle.setPointerCapture(e.pointerId);
+      });
+      handle.addEventListener('pointermove', (e) => {
+        if (!handle.hasPointerCapture(e.pointerId)) return;
+        const x = ox + e.clientX - sx, y = oy + e.clientY - sy;
+        el.dataset.x = String(x); el.dataset.y = String(y);
+        el.style.translate = `${x}px ${y}px`;
+      });
+      const end = () => el.classList.remove('dragging');
+      handle.addEventListener('pointerup', end);
+      handle.addEventListener('pointercancel', end);
+    });
+  </script>
+</Base>

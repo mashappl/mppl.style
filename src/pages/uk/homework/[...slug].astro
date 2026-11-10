@@ -1,0 +1,8 @@
+---
+import HomeworkEntry from '../../../views/HomeworkEntry.astro';
+import { getHomework } from '../../../i18n';
+export async function getStaticPaths() {
+  return (await getHomework()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+---
+<HomeworkEntry lang="uk" entry={Astro.props.entry} />

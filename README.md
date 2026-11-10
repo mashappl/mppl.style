@@ -17,7 +17,14 @@ Then open http://localhost:4321.
    The filename becomes the page address: `mppl.style/homework/01-colour-analysis/`.
 2. Put the images in `src/assets/homework/` (JPG/PNG straight from your phone is fine; the site resizes them).
 3. Fill in the title, date and text. Delete the `draft: true` line when it's ready to show.
+   - Want an outfit breakdown (full look + numbered pieces)? Fill in the `looks:` block in the template.
+     Cut-out PNGs (transparent background) look best.
 4. Commit and push. The site updates by itself in about a minute.
+
+## Languages
+
+The site has English (`mppl.style/`) and Ukrainian (`mppl.style/uk/`). All the site's own text lives in
+`src/i18n.ts`. Homework entries are written once, in whichever language you like, and appear on both.
 
 ## Project layout
 
@@ -25,7 +32,8 @@ Then open http://localhost:4321.
 | --- | --- |
 | `src/content/homework/` | One Markdown file per assignment |
 | `src/assets/homework/` | Images for the assignments |
-| `src/pages/` | Home, About, Homework pages |
+| `src/views/` | Home, About, Homework pages (shared by both languages) |
+| `src/i18n.ts` | All site text, English + Ukrainian |
 | `src/styles/global.css` | Colours and fonts |
 | `public/CNAME` | Tells GitHub Pages to serve the site on mppl.style |
 

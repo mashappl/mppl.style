@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Window from './Window.astro';
+import { href, formatDate, t, type Lang } from '../i18n';
+interface Props { entry: CollectionEntry<'homework'>; lang: Lang; i: number }
+const { entry, lang, i } = Astro.props;
+const { title, module, date, summary, cover } = entry.data;
+const tilt = [-1.6, 1.2, -0.6, 1.8, -1.1][i % 5];
+---
+<a class="hw-file" href={href(lang, `/homework/${entry.id}/`)} style={`--tilt:${tilt}deg`}>
+  <span class="tape" aria-hidden="true"></span>
+  <Window file={`${entry.id}.md`}>
+    <div class="hw-thumb">
+      {cover
+        ? <Image src={cover} alt="" width={720} />
+        : <span class="xerox"><span class="marker">{t[lang].hw.nopic}</span></span>}
+    </div>
+  </Window>
+  <p class="hw-meta">{module ? `${module} · ` : ''}{formatDate(lang, date)}</p>
+  <h3>{title}</h3>
+  {summary && <p class="hw-sum">{summary}</p>}
+</a>

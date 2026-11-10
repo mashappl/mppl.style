@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import HomeworkFile from '../components/HomeworkFile.astro';
+import { t, getHomework, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = t[lang];
+const entries = await getHomework();
+---
+<Base lang={lang} title={s.nav.homework} ground="grid">
+  <section class="paper page-top">
+    <div class="wrap">
+      <h1 class="sec-title big">
+        <span class="t-grot">{s.hw.h1}</span> <span class="t-hl"><span class="t-serif">{s.hw.h2}</span></span>
+      </h1>
+      <p class="sec-sub">{s.hw.sub}</p>
+      {entries.length
+        ? <div class="hw-grid">{entries.map((e, i) => <HomeworkFile entry={e} lang={lang} i={i} />)}</div>
+        : <p class="empty marker">{s.hw.empty}</p>}
+    </div>
+  </section>
+</Base>

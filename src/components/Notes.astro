@@ -1,0 +1,15 @@
+---
+// Phone-notes style card (back chevron, share + more icons).
+interface Props { back: string; class?: string; drag?: boolean; style?: string }
+const { back, class: cls = '', drag = false, style } = Astro.props;
+---
+<div class={`notes ${cls}`} data-drag={drag ? '' : undefined} style={style}>
+  <div class="notes-bar">
+    <span class="notes-back"><svg viewBox="0 0 10 16" aria-hidden="true"><path d="M8.5 1.5 2 8l6.5 6.5" /></svg>{back}</span>
+    <span class="notes-icons" aria-hidden="true">
+      <svg viewBox="0 0 20 22"><path d="M10 14V2M5.5 6.5 10 2l4.5 4.5M3.5 10v10h13V10" /></svg>
+      <svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="9.5" /><circle cx="6.5" cy="11" r=".6" /><circle cx="11" cy="11" r=".6" /><circle cx="15.5" cy="11" r=".6" /></svg>
+    </span>
+  </div>
+  <slot />
+</div>

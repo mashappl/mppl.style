@@ -6,11 +6,22 @@ const homework = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      module: z.string().optional(),       // e.g. "Module 1 · Colour"
+      module: z.string().optional(),       // e.g. "module 1 · colour"
       date: z.coerce.date(),
       summary: z.string().optional(),
-      cover: image().optional(),          // path to an image next to the file
+      cover: image().optional(),          // image path relative to this file
       draft: z.boolean().default(false),  // true = hidden from the site
+      // Outfit breakdowns: a cut-out photo of the look + the pieces that make it.
+      looks: z
+        .array(
+          z.object({
+            title: z.string().optional(),
+            photo: image(),                       // best as a cut-out PNG (transparent background)
+            colour: z.string().default('#5b1424'), // the puddle under the feet
+            pieces: z.array(z.object({ image: image().optional(), note: z.string() })).default([]),
+          }),
+        )
+        .optional(),
     }),
 });
 
