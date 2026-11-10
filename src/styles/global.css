@@ -533,12 +533,8 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 .brief :focus-visible { outline: 1.5px dashed var(--ink-figma); outline-offset: 3px; }
 
 /* welcome */
-.welcome { grid-template-areas: 'art text'; row-gap: 40px; }
+.welcome { grid-template-areas: '. text'; row-gap: 40px; }
 .welcome__text { grid-area: text; display: grid; gap: 30px; justify-items: start; }
-.welcome__art { grid-area: art; margin: 0; max-width: 360px; }
-.swatchcard { display: grid; grid-template-columns: repeat(5, 1fr); aspect-ratio: 5 / 3; background: #fff; padding: 14px; box-shadow: 2px 10px 14px -5px rgba(51, 43, 33, 0.13); rotate: -2deg; }
-.swatchcard span { background: var(--c); }
-.art-quote { margin-top: 34px; max-width: 30ch; font-size: 12px; line-height: 1.35; font-weight: 700; text-transform: uppercase; }
 .facts { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, auto); gap: 30px; }
 .facts li { display: grid; gap: 4px; }
 .facts strong { font-size: 13px; font-weight: 700; text-transform: uppercase; }
@@ -670,7 +666,7 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 @media (max-width: 900px) {
   .brief-bar { padding-left: 20px; padding-right: 20px; }
   .progress { left: 20px; right: 20px; }
-  .welcome { grid-template-areas: 'text' 'art'; }
+  .welcome { grid-template-areas: 'text'; }
   .facts { grid-template-columns: 1fr 1fr; gap: 18px 24px; }
   .steps { display: none; }
   .formwrap { padding-top: 36px; }
