@@ -93,9 +93,12 @@ const CONFIG = {
           <textarea class="textarea" id="${f.id}" name="${f.id}" rows="${f.rows || 3}" placeholder="${esc(f.placeholder || "")}" aria-describedby="${describedBy(f)}" ${f.required ? 'aria-required="true"' : ""}>${esc(v || "")}</textarea>${err(f)}</div>`;
       case "chips": case "radio": {
         const multi = f.type === "chips"; const vals = multi ? (v || []) : [v];
-        const opts = f.options.map((o, i) => `<label class="chip"><input type="${multi ? "checkbox" : "radio"}" name="${f.id}" value="${esc(o)}" ${vals.includes(o) ? "checked" : ""}><span>${esc(o)}</span></label>`).join("");
+        const tile = (o) => f.tiles && B.tiles && B.tiles[o];
+        const opts = f.options.map((o, i) => tile(o)
+          ? `<label class="chip tile"><input type="${multi ? "checkbox" : "radio"}" name="${f.id}" value="${esc(o)}" ${vals.includes(o) ? "checked" : ""}><span class="tile__img" style="background-image:url('/brief/swatches/${tile(o)}')" aria-hidden="true"></span><span class="tile__nm">${esc(o)}</span></label>`
+          : `<label class="chip"><input type="${multi ? "checkbox" : "radio"}" name="${f.id}" value="${esc(o)}" ${vals.includes(o) ? "checked" : ""}><span>${esc(o)}</span></label>`).join("");
         const other = f.other ? `<div class="other"><label class="sr" for="${f.id}__other">Інше (свій варіант)</label><input class="input" id="${f.id}__other" name="${f.id}__other" placeholder="Інше — допиши своє" value="${esc(a[f.id + "__other"] || "")}"></div>` : "";
-        return `<fieldset class="field" data-id="${f.id}" aria-describedby="${describedBy(f)}"><legend>${esc(f.label)}${optTag(f)}</legend>${hint(f)}<div class="chips" ${f.max ? `data-max="${f.max}"` : ""}>${opts}</div>${other}${err(f)}</fieldset>`;
+        return `<fieldset class="field" data-id="${f.id}" aria-describedby="${describedBy(f)}"><legend>${esc(f.label)}${optTag(f)}</legend>${hint(f)}<div class="chips${f.tiles ? " chips--tiles" : ""}" ${f.max ? `data-max="${f.max}"` : ""}>${opts}</div>${other}${err(f)}</fieldset>`;
       }
       case "swatches": {
         const vals = v || [];
