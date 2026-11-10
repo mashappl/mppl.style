@@ -14,7 +14,7 @@ const link = href(lang, `/homework/${entry.id}/`);
 <article class={`collage collage-${variant}`}>
   <p class="label">{s.homeworkN} {String(n).padStart(2, '0')}<br />{entry.data.module}</p>
   <a class="sheets" href={link} aria-label={entry.data.title}>
-    {sheets.length === 0 && entry.data.form && [0, 1, 2].map((pg) => <span class={`sheet sheet-${pg + 1}`}><FormSheet lang={lang} page={pg} /></span>)}
+    {sheets.length === 0 && entry.data.form && [0, 1, 2].map((pg) => <span class={`sheet sheet-${pg + 1}`}><FormSheet page={pg} /></span>)}
     {sheets.map((sh, i) => (
       <span class={`sheet sheet-${i + 1}`}>
         <Image src={sh.image} alt="" width={720} class={sh.fit === 'cover' ? 'fit-cover' : 'fit-contain'} />

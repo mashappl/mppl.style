@@ -35,7 +35,7 @@ const tilts = [[-3, 1.5, 4], [2, -2, -4], [-1.5, 3, -3]];
               <a class="st-small" href={link}>{s.viewStudy} ↗</a>
             </div>
             <a class="hw-stack" href={link} aria-label={e.data.title}>
-              {pics.length === 0 && e.data.form && [0, 1, 2].map((pg) => <span class={`hw-stack-sheet hw-stack-${pg + 1}`} style={`rotate:${tl[pg]}deg`}><FormSheet lang={lang} page={pg} /></span>)}
+              {pics.length === 0 && e.data.form && [0, 1, 2].map((pg) => <span class={`hw-stack-sheet hw-stack-${pg + 1}`} style={`rotate:${tl[pg]}deg`}><FormSheet page={pg} /></span>)}
               {pics.map((p, j) => (
                 <span class={`hw-stack-sheet hw-stack-${j + 1}`} style={`rotate:${tl[j]}deg`}>
                   <Image src={p.image} alt="" width={500} class={p.fit === 'cover' ? 'fit-cover' : 'fit-contain'} />

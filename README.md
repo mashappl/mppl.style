@@ -20,6 +20,15 @@ Then open http://localhost:4321.
    Delete the ones you don't. Delete the `draft: true` line when it's ready.
 4. Commit and push. The site updates by itself in about a minute.
 
+## Client brief (homework 01)
+
+- Questions: `src/data/brief.js` (Ukrainian). The home page sheets read from the same file.
+- Form logic: `public/brief/app.js` (wizard, autosave, photos, PDF/HTML/JSON downloads).
+  At the top of that file, `CONFIG`:
+  - `STYLIST_CONTACT` — where clients send their answers (currently a placeholder).
+  - `SUBMIT_ENDPOINT` — leave empty for demo mode (nothing is sent), or paste a Formspree URL to receive briefs by email.
+- If you change question ids a lot, bump `LS_KEY` in `app.js` so old saved drafts don't clash.
+
 ## Languages
 
 The site has English (`mppl.style/`) and Ukrainian (`mppl.style/uk/`). All the site's own text lives in

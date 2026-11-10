@@ -1,18 +1,19 @@
 ---
-// Homework 01: the client questionnaire. A real form, but nothing is sent: on submit it turns
-// the answers into a printable "client profile".
+// Homework 01: the client brief. Questions live in src/data/brief.js; the form logic is
+// public/brief/app.js (wizard, autosave, photos, PDF/HTML/JSON downloads). This page only
+// provides the markup the script expects, in the site's editorial style.
 import type { CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { t, href, type Lang } from '../i18n';
-import { questionnaire, formText } from '../data/questionnaire';
+import { BRIEF } from '../data/brief.js';
 interface Props { lang: Lang; entry: CollectionEntry<'homework'>; n: number }
 const { lang, entry, n } = Astro.props;
 const s = t[lang];
-const f = formText[lang];
 const d = entry.data;
 const nn = String(n).padStart(2, '0');
 const words = d.title.toUpperCase().split(' ');
 const mid = Math.ceil(words.length / 2);
+const ukNote = lang === 'en' ? 'The brief itself is in Ukrainian, written for my Ukrainian-speaking clients.' : '';
 ---
 <Base lang={lang} title={d.title} description={d.summary} back>
   <article class="study-page">
@@ -22,106 +23,95 @@ const mid = Math.ceil(words.length / 2);
       <h1 class="st-title">{words.slice(0, mid).join(' ')}<br />{words.slice(mid).join(' ')}.</h1>
       <div>
         {d.summary && <p class="st-lede">{d.summary}</p>}
+        {ukNote && <p class="st-lede brief-lang">{ukNote}</p>}
         {d.meta && <dl class="st-meta">{d.meta.map((m) => <div><dt>{m.k}</dt><dd>{m.v}</dd></div>)}</dl>}
       </div>
     </header>
 
-    <form class="qf st-pad" id="qf" novalidate>
-      <p class="qf-note st-tiny-reg">{f.note}</p>
-      {questionnaire.map((sec, i) => (
-        <fieldset class="qf-section">
-          <legend class="st-small">{String(i + 1).padStart(2, '0')} / {sec.title[lang]}</legend>
-          <div class="qf-fields">
-            {sec.fields.map((fl) => {
-              const name = `${sec.id}.${fl.id}`;
-              if (fl.type === 'text' || fl.type === 'email') return (
-                <label class={`qf-field ${'half' in fl && fl.half ? 'half' : ''}`}>
-                  <span class="qf-label">{fl.label[lang]}</span>
-                  <input type={fl.type} name={name} data-label={fl.label[lang]} placeholder={'hint' in fl && fl.hint ? fl.hint[lang] : ''} autocomplete={fl.type === 'email' ? 'email' : 'off'} />
-                </label>
-              );
-              if (fl.type === 'textarea') return (
-                <label class="qf-field">
-                  <span class="qf-label">{fl.label[lang]}</span>
-                  <textarea name={name} rows="3" data-label={fl.label[lang]} placeholder={fl.hint ? fl.hint[lang] : ''}></textarea>
-                </label>
-              );
-              if (fl.type === 'scale') return (
-                <div class="qf-field" role="group" aria-label={fl.label[lang]}>
-                  <span class="qf-label">{fl.label[lang]}</span>
-                  <div class="qf-scale">
-                    <span class="st-tiny">{fl.ends[0][lang]}</span>
-                    {[1, 2, 3, 4, 5].map((v) => <label class="qf-dot"><input type="radio" name={name} value={String(v)} data-label={fl.label[lang]} /><span>{v}</span></label>)}
-                    <span class="st-tiny">{fl.ends[1][lang]}</span>
-                  </div>
-                </div>
-              );
-              return (
-                <div class="qf-field" role="group" aria-label={fl.label[lang]}>
-                  <span class="qf-label">{fl.label[lang]}</span>
-                  <div class="qf-chips">
-                    {fl.options.map((o) => (
-                      <label class="qf-chip"><input type={fl.type === 'multi' ? 'checkbox' : 'radio'} name={name} value={o[lang]} data-label={fl.label[lang]} /><span>{o[lang]}</span></label>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </fieldset>
-      ))}
-      <button type="submit" class="qf-submit st-small">{f.submit} →</button>
-    </form>
-
-    <section class="qf-profile st-pad" id="qf-profile" hidden>
-      <div class="qf-profile-head">
-        <p class="st-small">{s.homeworkN} {nn} / {f.profile}</p>
-        <div class="qf-actions">
-          <button type="button" class="st-small" id="qf-edit">← {f.edit}</button>
-          <button type="button" class="st-small" id="qf-print">{f.print}</button>
+    <div class="brief" lang="uk">
+      <div class="brief-bar st-pad">
+        <span class="st-small">анкета-бриф</span>
+        <div class="topbar__meta">
+          <span class="savestate st-tiny-reg" id="savestate" aria-live="polite"></span>
+          <span class="counter st-small" id="counter" aria-hidden="true"></span>
         </div>
+        <div class="progress" id="progress" role="progressbar" aria-label="Прогрес заповнення" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
       </div>
-      <div class="qf-sheet" id="qf-out"></div>
-    </section>
+
+      <section class="screen welcome st-grid" id="welcome" aria-labelledby="welcome-title">
+        <div class="welcome__text">
+          <h2 id="welcome-title" class="st-headline-lg"><span>Розкажи про себе,</span><span>а я — про Твій стиль</span></h2>
+          <p class="st-lede">Ця анкета — перший крок нашої роботи. Вона допоможе мені побачити, як Ти живеш, що відчуваєш і чого насправді хочеш від гардеробу. Тоді рекомендації будуть про Тебе, а не про картинку з Pinterest.</p>
+          <ul class="facts">
+            <li><strong>15–20 хв</strong><span>11 коротких розділів</span></li>
+            <li><strong>Чесно</strong><span>немає правильних відповідей</span></li>
+            <li><strong>Приватно</strong><span>бачу лише я</span></li>
+          </ul>
+          <div class="prep">
+            <p class="st-small">Що знадобиться</p>
+            <ul>
+              <li>Сантиметрова стрічка для параметрів</li>
+              <li>3 фото при денному світлі: анфас, профіль, обличчя</li>
+              <li>За бажанням — дошка Pinterest з образами, що подобаються</li>
+            </ul>
+          </div>
+          <div class="welcome__actions">
+            <button class="btn btn--primary" id="start" type="button">Почати</button>
+            <button class="btn btn--ghost" id="restart" type="button" hidden>Почати заново</button>
+          </div>
+          <p class="note">Відповіді автоматично зберігаються в цьому браузері — можна зупинитись і повернутись пізніше.</p>
+        </div>
+        <figure class="welcome__art" aria-hidden="true">
+          <div class="swatchcard">
+            <span style="--c:#F3EBDD"></span><span style="--c:#B5835A"></span><span style="--c:#6B6E3A"></span><span style="--c:#1F2C4C"></span><span style="--c:#8C4A32"></span>
+          </div>
+          <p class="art-quote">«Хороший образ — не той, що подобається в Pinterest, а той, який людина починає носити»</p>
+        </figure>
+      </section>
+
+      <section class="screen formwrap st-grid" id="formwrap" hidden>
+        <nav class="steps" aria-label="Розділи анкети"><ol id="stepnav"></ol></nav>
+        <form id="brief" novalidate>
+          <div id="step" class="step" aria-live="off"></div>
+          <div class="formnav">
+            <button class="btn btn--ghost" type="button" id="prev">← Назад</button>
+            <span class="formnav__hint st-tiny-reg" id="navhint"></span>
+            <button class="btn btn--primary" type="submit" id="next">Далі →</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="screen thanks st-grid" id="thanks" hidden aria-labelledby="thanks-title" tabindex="-1">
+        <div>
+          <p class="st-small">Бриф отримано</p>
+          <h2 id="thanks-title" class="st-headline-lg">Дякую, <em id="thanks-name">що довірилась</em></h2>
+        </div>
+        <div>
+          <p class="st-lede" id="thanks-lead">Я уважно прочитаю Твої відповіді й напишу протягом 2 робочих днів, щоб домовитись про першу зустріч.</p>
+          <div class="callout" id="thanks-callout" hidden></div>
+          <div class="downloads">
+            <p class="st-small">Збережи копію своїх відповідей</p>
+            <div class="downloads__row">
+              <button class="btn btn--primary" type="button" id="dl-pdf">Зберегти як PDF</button>
+              <button class="btn btn--ghost" type="button" id="dl-html">Завантажити HTML</button>
+              <button class="btn btn--ghost" type="button" id="dl-json">Завантажити JSON</button>
+            </div>
+            <p class="note">PDF відкриє вікно друку — обери «Зберегти як PDF». HTML-файл містить і фото.</p>
+          </div>
+          <div class="thanks__actions">
+            <button class="btn btn--link" type="button" id="edit">Повернутись і змінити відповіді</button>
+            <button class="btn btn--link" type="button" id="reset">Очистити анкету на цьому пристрої</button>
+          </div>
+        </div>
+      </section>
+      <span id="year" hidden></span>
+    </div>
 
     <footer class="st-end st-pad">
       <a class="st-small" href={href(lang, '/homework/')}>←&nbsp;&nbsp;{s.backAll}</a>
       <p class="st-tiny-reg">mppl.style / {s.notebook} / {nn}</p>
     </footer>
   </article>
-
-  <script is:inline define:vars={{ sections: questionnaire.map((x) => ({ id: x.id, title: x.title[lang] })), empty: f.empty, profileTitle: f.profile }}>
-    const form = document.getElementById('qf');
-    const profile = document.getElementById('qf-profile');
-    const out = document.getElementById('qf-out');
-    const esc = (v) => v.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const data = new FormData(form);
-      let html = '';
-      sections.forEach((sec, i) => {
-        const fields = [...form.querySelectorAll(`[name^="${sec.id}."]`)];
-        const seen = new Set();
-        let rows = '';
-        fields.forEach((el) => {
-          if (seen.has(el.name)) return;
-          seen.add(el.name);
-          const vals = data.getAll(el.name).map(String).map((v) => v.trim()).filter(Boolean);
-          rows += `<div><dt>${esc(el.dataset.label)}</dt><dd>${vals.length ? esc(vals.join(', ')) : empty}</dd></div>`;
-        });
-        html += `<section><h3>${String(i + 1).padStart(2, '0')} / ${esc(sec.title)}</h3><dl>${rows}</dl></section>`;
-      });
-      const name = String(data.get('about.name') || '').trim();
-      out.innerHTML = `<h2>${esc(name || profileTitle)}</h2>${html}`;
-      form.hidden = true;
-      profile.hidden = false;
-      profile.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-    document.getElementById('qf-edit').addEventListener('click', () => {
-      profile.hidden = true;
-      form.hidden = false;
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-    document.getElementById('qf-print').addEventListener('click', () => window.print());
-  </script>
+  <script is:inline define:vars={{ BRIEF }}>window.BRIEF = BRIEF;</script>
+  <script is:inline src="/brief/app.js"></script>
 </Base>
