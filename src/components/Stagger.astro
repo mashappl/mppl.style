@@ -1,0 +1,9 @@
+---
+// Editorial staggered mono lines (each line indented differently).
+interface Props { lines: readonly string[]; class?: string }
+const { lines, class: cls = '' } = Astro.props;
+const indents = [0, 5, 7, 2, 9, 4];
+---
+<p class={`stagger ${cls}`} aria-hidden="true">
+  {lines.map((l, i) => <span style={`padding-left:${indents[i % indents.length]}ch`}>{l}</span>)}
+</p>

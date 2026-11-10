@@ -1,8 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import Sky from '../components/Sky.astro';
-import Window from '../components/Window.astro';
 import Notes from '../components/Notes.astro';
+import Print from '../components/Print.astro';
 import { t, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -10,14 +10,14 @@ const s = t[lang];
 ---
 <Base lang={lang} title={s.nav.about}>
   <section class="hero about">
-    <Sky />
+    <Sky variant="about" />
     <div class="about-stage">
       <Notes back={s.about.notes} class="about-note">
         <h1 class="sec-title"><span class="t-grot">{s.about.title}</span> <span class="t-hl"><span class="t-serif">{s.about.titleEm}</span></span></h1>
         {s.about.p.map((p) => <p>{p}</p>)}
       </Notes>
-      <div class="about-photo"><span class="tape" aria-hidden="true"></span>
-        <Window file={s.about.photo}><div class="fit"><span class="xerox"><span class="marker">{s.about.photoEmpty}</span></span></div></Window>
+      <div class="about-photo">
+        <Print holder="clip" caption={s.about.photo}><div class="fit"><span class="xerox"><span class="marker">{s.about.photoEmpty}</span></span></div></Print>
       </div>
       <p class="stamp about-stamp" aria-hidden="true"><span>{s.stamp[0]}</span><span>{s.stamp[1]}</span></p>
     </div>

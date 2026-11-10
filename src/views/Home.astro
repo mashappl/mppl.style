@@ -4,6 +4,8 @@ import Sky from '../components/Sky.astro';
 import Window from '../components/Window.astro';
 import Notes from '../components/Notes.astro';
 import Folder from '../components/Folder.astro';
+import Print from '../components/Print.astro';
+import Stagger from '../components/Stagger.astro';
 import HomeworkFile from '../components/HomeworkFile.astro';
 import { Image } from 'astro:assets';
 import { t, href, getHomework, type Lang } from '../i18n';
@@ -13,6 +15,7 @@ const s = t[lang];
 const entries = await getHomework();
 const latest = entries.slice(0, 3);
 const fitCover = entries.find((e) => e.data.cover)?.data.cover;
+const stamp = new Date().toLocaleDateString('en-GB', { month: '2-digit', year: '2-digit' }).replace('/', '.');
 const swatches = ['#7a4a2b', '#b36a3c', '#c99a5b', '#8a8b4c', '#4f5e3a', '#9c4a3e', '#d9b48f', '#5b3a2e'];
 ---
 <Base lang={lang}>
@@ -25,7 +28,7 @@ const swatches = ['#7a4a2b', '#b36a3c', '#c99a5b', '#8a8b4c', '#4f5e3a', '#9c4a3
           <svg class="ring" viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true"><path d="M30 78C24 30 150 12 250 16c90 4 140 30 132 62-9 38-120 52-215 48C80 122 18 104 24 70 30 40 110 22 196 20" /></svg>
         </span>
       </h1>
-      <p class="hero-sub">{s.hero.sub}</p>
+      <p class="hero-sub caps">{s.hero.sub}</p>
       <a class="btn" href={href(lang, '/homework/')}>{s.hero.cta}</a>
 
       <Window file={s.palette.file} class="c-palette taped" drag>
@@ -36,11 +39,15 @@ const swatches = ['#7a4a2b', '#b36a3c', '#c99a5b', '#8a8b4c', '#4f5e3a', '#9c4a3
         <p class="palette-note">{s.palette.note}</p>
       </Window>
 
-      <Window file={s.fit.file} class="c-fit taped" drag>
-        <div class="fit">
-          {fitCover ? <Image src={fitCover} alt="" width={600} /> : <span class="xerox"><span class="marker">{s.fit.empty}</span></span>}
-        </div>
-      </Window>
+      <div class="c-fit" data-drag>
+        <Print holder="sleeve" caption={s.fit.file}>
+          <div class="fit">
+            {fitCover ? <Image src={fitCover} alt="" width={600} /> : <span class="xerox"><span class="marker">{s.fit.empty}</span></span>}
+          </div>
+        </Print>
+      </div>
+
+      <p class="hero-corner caps"><span>{s.corner[0]}</span><span>{s.corner[1]}</span><span>{s.vol} · {stamp}</span></p>
 
       <Notes back={s.capsule.title} class="c-capsule" drag>
         <ul class="checks">
@@ -60,8 +67,9 @@ const swatches = ['#7a4a2b', '#b36a3c', '#c99a5b', '#8a8b4c', '#4f5e3a', '#9c4a3
     </div>
   </section>
 
-  <section class="paper hw-section">
+  <section class="oxblood hw-section">
     <div class="wrap">
+      <Stagger lines={[...s.stagger, s.vol]} class="hw-stagger" />
       <h2 class="sec-title">
         <span class="t-grot">{s.hw.h1}</span> <span class="t-hl"><span class="t-serif">{s.hw.h2}</span></span>
         {latest.length > 0 && <span class="scribble marker" aria-hidden="true">{s.scribble}</span>}

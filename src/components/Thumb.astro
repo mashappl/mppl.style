@@ -1,0 +1,9 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props { cover?: ImageMetadata; empty: string }
+const { cover, empty } = Astro.props;
+---
+<div class="hw-thumb">
+  {cover ? <Image src={cover} alt="" width={720} /> : <span class="xerox"><span class="marker">{empty}</span></span>}
+</div>

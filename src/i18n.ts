@@ -37,6 +37,9 @@ export const t = {
     folders: ['homework', 'colour', 'closet'],
     stamp: ['stylist in training', 'handle with care'],
     scribble: 'new!',
+    stagger: ['homework', 'in public', 'homework'],
+    vol: 'vol. 01',
+    corner: ['personal styling', 'work in progress'],
     hw: {
       h1: 'the', h2: 'homework',
       sub: 'every assignment from the course: the brief, the work, what i learned.',
@@ -85,6 +88,9 @@ export const t = {
     folders: ['домашки', 'колір', 'шафа'],
     stamp: ['стилістка на навчанні', 'обережно, крихке'],
     scribble: 'нове!',
+    stagger: ['домашки', 'публічно', 'домашки'],
+    vol: 'вип. 01',
+    corner: ['персональний стиль', 'в процесі'],
     hw: {
       h1: 'мої', h2: 'домашки',
       sub: 'кожне завдання з курсу: бриф, робота і що я з цього винесла.',
