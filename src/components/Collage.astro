@@ -1,5 +1,5 @@
 ---
-// Home page collage: three photo sheets pinned together with safety pins (from the Figma mockup).
+// Home page collage: three overlapping photo sheets (from the Figma mockup).
 // Two compositions alternate down the page: 'a' (title under the middle sheet) and 'b' (title under the last).
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
@@ -8,7 +8,6 @@ interface Props { entry: CollectionEntry<'homework'>; lang: Lang; n: number; var
 const { entry, lang, n, variant } = Astro.props;
 const s = t[lang];
 const sheets = entry.data.sheets ?? (entry.data.cover ? [{ image: entry.data.cover, fit: 'contain' as const }] : []);
-const pins = variant === 'a' ? ['/pins/pin-1.svg', '/pins/pin-2.svg'] : ['/pins/pin-3.svg', '/pins/pin-4.svg'];
 const link = href(lang, `/homework/${entry.id}/`);
 ---
 <article class={`collage collage-${variant}`}>
@@ -19,7 +18,6 @@ const link = href(lang, `/homework/${entry.id}/`);
         <Image src={sh.image} alt="" width={720} class={sh.fit === 'cover' ? 'fit-cover' : 'fit-contain'} />
       </span>
     ))}
-    {sheets.length > 1 && pins.slice(0, sheets.length - 1).map((p, i) => <img class={`spin spin-${i + 1}`} src={p} alt="" width="110" height="28" />)}
   </a>
   <div class="label study">
     <p class="study-title">{entry.data.title}</p>
