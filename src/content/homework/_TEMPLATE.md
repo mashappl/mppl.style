@@ -1,7 +1,7 @@
 ---
 # HOW TO USE: copy this file, rename it (e.g. 03-colour-analysis.md), fill it in.
 # Files starting with "_" are ignored by the site. Put photos in src/assets/homework/<folder>/.
-# Every section below is optional — delete what you don't need. Sections are numbered automatically.
+# Every section below is optional – delete what you don't need. Sections are numbered automatically.
 
 title: The everyday wardrobe        # big title (a full stop is added for you)
 module: wardrobe analysis           # shows as "HOMEWORK 03 / WARDROBE ANALYSIS"
@@ -22,7 +22,7 @@ meta:
   - { k: format, v: Wardrobe breakdown }
   - { k: status, v: In progress }
 
-# 01 / THE STARTING POINT — big portrait + up to 3 side sheets + palette.
+# 01 / THE STARTING POINT – big portrait + up to 3 side sheets + palette.
 start:
   portrait: ../../assets/homework/03/portrait.jpg
   caption: ['structured + soft.', 'the contrast is the starting point.']
@@ -40,7 +40,7 @@ start:
     - { name: charcoal, hex: '#333636' }
     - { name: cocoa, hex: '#664a38' }
 
-# 02 / WHAT I NOTICE — a headline + up to 3 points.
+# 02 / WHAT I NOTICE – a headline + up to 3 points.
 notice:
   headline: The pieces are there. The balance is the work.
   points:
@@ -48,7 +48,7 @@ notice:
     - { label: palette, title: Let texture do the talking., body: Short paragraph. }
     - { label: versatility, title: Style before adding., body: Short paragraph. }
 
-# 03 / PUTTING IT TOGETHER — up to 2 outfit prints, each with an optional small piece sheet.
+# 03 / PUTTING IT TOGETHER – up to 2 outfit prints, each with an optional small piece sheet.
 outfits:
   headline: Same foundation. A different feeling.
   items:

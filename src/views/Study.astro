@@ -1,5 +1,5 @@
 ---
-// Homework case study (from the Figma mockup "Homework 01 — The everyday wardrobe").
+// Homework case study (from the Figma mockup "Homework 01 – The everyday wardrobe").
 import { Image } from 'astro:assets';
 import { render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
@@ -62,7 +62,7 @@ const mid = Math.ceil(titleLines.length / 2);
         <ol class="st-points">
           {d.notice.points.map((p, i) => (
             <li>
-              <p class="st-small">{String(i + 1).padStart(2, '0')} — {p.label}</p>
+              <p class="st-small">{String(i + 1).padStart(2, '0')} – {p.label}</p>
               <h3>{p.title}</h3>
               <p class="st-body">{p.body}</p>
             </li>

@@ -1,14 +1,14 @@
 /* =========================================================================
-   mppl.style — анкета-бриф
+   mppl.style – анкета-бриф
    ========================================================================= */
 
-/* ▼▼▼ CONFIG — єдине місце, яке потрібно змінити ▼▼▼ */
+/* ▼▼▼ CONFIG – єдине місце, яке потрібно змінити ▼▼▼ */
 const CONFIG = {
   // URL для надсилання відповідей. Наприклад, Formspree: "https://formspree.io/f/abcdwxyz"
   // Порожній рядок = демо-режим: відповіді лише зберігаються локально й завантажуються файлом.
   SUBMIT_ENDPOINT: "https://formspree.io/f/xljbrbek",
-  // true — надсилати фото як файли (multipart). Formspree приймає файли лише на платних тарифах.
-  // false — фото не надсилаються; клієнтку просять надіслати завантажений HTML-файл.
+  // true – надсилати фото як файли (multipart). Formspree приймає файли лише на платних тарифах.
+  // false – фото не надсилаються; клієнтку просять надіслати завантажений HTML-файл.
   SEND_PHOTOS: false,
   // Куди клієнтці надіслати файл з фото/відповідями (показується на екрані подяки).
   STYLIST_CONTACT: "contact@mariyapopel.com",
@@ -97,7 +97,7 @@ const CONFIG = {
         const opts = f.options.map((o, i) => tile(o)
           ? `<label class="chip tile"><input type="${multi ? "checkbox" : "radio"}" name="${f.id}" value="${esc(o)}" ${vals.includes(o) ? "checked" : ""}><span class="tile__img" style="background-image:url('/brief/swatches/${tile(o)}')" aria-hidden="true"></span><span class="tile__nm">${esc(o)}</span></label>`
           : `<label class="chip"><input type="${multi ? "checkbox" : "radio"}" name="${f.id}" value="${esc(o)}" ${vals.includes(o) ? "checked" : ""}><span>${esc(o)}</span></label>`).join("");
-        const other = f.other ? `<div class="other"><label class="sr" for="${f.id}__other">Інше (свій варіант)</label><input class="input" id="${f.id}__other" name="${f.id}__other" placeholder="Інше — допиши своє" value="${esc(a[f.id + "__other"] || "")}"></div>` : "";
+        const other = f.other ? `<div class="other"><label class="sr" for="${f.id}__other">Інше (свій варіант)</label><input class="input" id="${f.id}__other" name="${f.id}__other" placeholder="Інше – допиши своє" value="${esc(a[f.id + "__other"] || "")}"></div>` : "";
         return `<fieldset class="field" data-id="${f.id}" aria-describedby="${describedBy(f)}"><legend>${esc(f.label)}${optTag(f)}</legend>${hint(f)}<div class="chips${f.tiles ? " chips--tiles" : ""}" ${f.max ? `data-max="${f.max}"` : ""}>${opts}</div>${other}${err(f)}</fieldset>`;
       }
       case "swatches": {
@@ -109,12 +109,12 @@ const CONFIG = {
         const val = v ?? f.value;
         return `<div class="field" data-id="${f.id}"><label class="field__label" for="${f.id}">${esc(f.label)}${optTag(f)}</label>${hint(f)}
           <div class="range"><output class="range__value" for="${f.id}" id="${f.id}-out">${esc(rangeText(f, val))}</output>
-          <input type="range" id="${f.id}" name="${f.id}" min="${f.min}" max="${f.max}" step="${f.step}" value="${val}" aria-valuetext="${esc(rangeText(f, val) + " — " + f.left + " ↔ " + f.right)}" data-touched="${v != null}">
+          <input type="range" id="${f.id}" name="${f.id}" min="${f.min}" max="${f.max}" step="${f.step}" value="${val}" aria-valuetext="${esc(rangeText(f, val) + " – " + f.left + " ↔ " + f.right)}" data-touched="${v != null}">
           <div class="range__ends" aria-hidden="true"><span>${esc(f.left)}</span><span>${esc(f.right)}</span></div></div>${err(f)}</div>`;
       }
       case "scale": {
         let o = "";
-        for (let i = f.min; i <= f.max; i++) o += `<label class="chip"><input type="radio" name="${f.id}" value="${i}" ${String(v) === String(i) ? "checked" : ""} aria-label="${i}${i === f.min ? " — " + f.left : i === f.max ? " — " + f.right : ""}"><span>${i}</span></label>`;
+        for (let i = f.min; i <= f.max; i++) o += `<label class="chip"><input type="radio" name="${f.id}" value="${i}" ${String(v) === String(i) ? "checked" : ""} aria-label="${i}${i === f.min ? " – " + f.left : i === f.max ? " – " + f.right : ""}"><span>${i}</span></label>`;
         return `<fieldset class="field" data-id="${f.id}"><legend>${esc(f.label)}${optTag(f)}</legend>${hint(f)}<div class="scale">${o}</div><div class="scale__ends" aria-hidden="true"><span>${esc(f.left)}</span><span>${esc(f.right)}</span></div>${err(f)}</fieldset>`;
       }
       case "number":
@@ -187,7 +187,7 @@ const CONFIG = {
     const tw = box.querySelector(".hours__total"); tw.classList.toggle("warn", total > 112);
     box.querySelector("[data-left]").textContent = total > 112 ? "Більше, ніж є у тижні 🙂" : total ? `ще ~${112 - total} год` : "";
     const home = (Number(hv.remote) || 0) + (Number(hv.home) || 0);
-    box.querySelector("[data-summary]").textContent = total ? `≈ ${Math.round((home / total) * 100)}% часу вдома, ${Math.round(((total - home) / total) * 100)}% — поза домом.` : "";
+    box.querySelector("[data-summary]").textContent = total ? `≈ ${Math.round((home / total) * 100)}% часу вдома, ${Math.round(((total - home) / total) * 100)}% – поза домом.` : "";
   }
 
   /* ---------- Photos ---------- */
@@ -254,7 +254,7 @@ const CONFIG = {
     else if (t.type === "range") {
       a[name] = Number(t.value);
       const txt = rangeText(f, t.value); $(`#${name}-out`).textContent = txt;
-      t.setAttribute("aria-valuetext", `${txt} — ${f.left} ↔ ${f.right}`);
+      t.setAttribute("aria-valuetext", `${txt} – ${f.left} ↔ ${f.right}`);
     } else if (t.type === "number") a[name] = t.value === "" ? "" : Number(t.value);
     else a[name] = t.value;
     const box = t.closest("[data-id]");
@@ -295,7 +295,7 @@ const CONFIG = {
         if (f.type === "consent" && !v) msg = "Потрібна твоя згода, щоб я могла працювати з відповідями.";
         else if (f.type !== "consent" && (!v || !String(v).trim())) msg = "Заповни, будь ласка, це поле.";
       }
-      if (!msg && f.type === "url" && v && !/^https?:\/\/\S+\.\S+/.test(v.trim())) msg = "Схоже, посилання неповне — воно має починатися з https://";
+      if (!msg && f.type === "url" && v && !/^https?:\/\/\S+\.\S+/.test(v.trim())) msg = "Схоже, посилання неповне – воно має починатися з https://";
       if (!msg && f.type === "group") {
         f.fields.forEach((sf) => { const x = a[sf.id]; if (sf.type === "number" && x !== "" && x != null && (x < sf.min || x > sf.max)) msg = `Перевір «${sf.label}»: значення між ${sf.min} і ${sf.max} ${sf.unit}.`; });
       }
@@ -306,7 +306,7 @@ const CONFIG = {
     });
     const fe = $("#form-error");
     if (bad.length) {
-      fe.hidden = false; const n = bad.length; fe.textContent = n === 1 ? "Залишилось одне поле — подивись нижче." : `Залишилось ${n} ${n < 5 ? "поля" : "полів"} — подивись нижче.`;
+      fe.hidden = false; const n = bad.length; fe.textContent = n === 1 ? "Залишилось одне поле – подивись нижче." : `Залишилось ${n} ${n < 5 ? "поля" : "полів"} – подивись нижче.`;
       const first = document.getElementById(bad[0].id) || $(`[data-id="${bad[0].id}"] input`);
       first && first.focus({ preventScroll: true });
       $(`[data-id="${bad[0].id}"]`).scrollIntoView({ behavior: "smooth", block: "center" });
@@ -335,7 +335,7 @@ const CONFIG = {
   function show(id) {
     ["welcome", "formwrap", "thanks"].forEach((s) => ($("#" + s).hidden = s !== id));
     $(".topbar__meta").style.visibility = id === "formwrap" ? "visible" : "hidden";
-    if (id !== "formwrap") { $("#progress span").style.width = id === "thanks" ? "100%" : "0"; document.title = "Анкета-бриф · mppl.style — персональний стиліст"; }
+    if (id !== "formwrap") { $("#progress span").style.width = id === "thanks" ? "100%" : "0"; document.title = "Анкета-бриф · mppl.style – персональний стиліст"; }
   }
   function startForm() { state.started = true; save(true); show("formwrap"); renderStep(); $("#step-title").focus(); }
   $("#start").addEventListener("click", startForm);
@@ -348,14 +348,14 @@ const CONFIG = {
       await action();
     });
   }
-  armTwice($("#restart"), "Точно? Натисни ще раз — відповіді буде видалено", async () => { await resetAll(); startForm(); });
+  armTwice($("#restart"), "Точно? Натисни ще раз – відповіді буде видалено", async () => { await resetAll(); startForm(); });
 
   /* ---------- Export ---------- */
   function fmt(f, v) {
     if (v == null || v === "" || (Array.isArray(v) && !v.length)) return null;
     switch (f.type) {
       case "range": return `${rangeText(f, v)} (${f.left} ↔ ${f.right})`;
-      case "scale": return `${v} з ${f.max} (${f.min} — ${f.left}, ${f.max} — ${f.right})`;
+      case "scale": return `${v} з ${f.max} (${f.min} – ${f.left}, ${f.max} – ${f.right})`;
       case "consent": return v ? "Так" : null;
       default: return Array.isArray(v) ? v.join(", ") : String(v);
     }
@@ -386,7 +386,7 @@ const CONFIG = {
   function payloadJSON(withPhotos) {
     const data = collect();
     return {
-      form: "mppl.style — анкета-бриф", version: 1, submittedAt: new Date().toISOString(),
+      form: "mppl.style – анкета-бриф", version: 1, submittedAt: new Date().toISOString(),
       client: A().name || "", contact: A().contact || "",
       sections: data.map((s) => ({ section: s.title, answers: s.items.map((i) => ({ question: i.label, answer: i.value, ...(withPhotos && i.photos ? { photos: i.photos } : {}) })) })),
       raw: A()
@@ -398,11 +398,11 @@ const CONFIG = {
     const sec = data.map((s) => `<section><h2>${esc(s.title)}</h2><dl>${s.items.map((i) => {
       let val = esc(i.value);
       if (i.swatches) val = i.swatches.map((n) => `<span class="sw"><i style="background:${color[n]}"></i>${esc(n)}</span>`).join("");
-      if (i.hours) val = `<div class="bar">${i.hours.map((h) => `<i style="width:${(h.h / i.total) * 100}%;background:${h.c}"></i>`).join("")}</div>` + i.hours.map((h) => `<span class="sw"><i style="background:${h.c}"></i>${esc(h.label)} — ${h.h} год</span>`).join("");
+      if (i.hours) val = `<div class="bar">${i.hours.map((h) => `<i style="width:${(h.h / i.total) * 100}%;background:${h.c}"></i>`).join("")}</div>` + i.hours.map((h) => `<span class="sw"><i style="background:${h.c}"></i>${esc(h.label)} – ${h.h} год</span>`).join("");
       if (i.photos) val = `<div class="ph">${i.photos.map((p) => `<img src="${p.dataUrl}" alt="${esc(p.name)}">`).join("")}</div>`;
       return `<div><dt>${esc(i.label)}</dt><dd>${val}</dd></div>`;
     }).join("")}</dl></section>`).join("");
-    return `<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Бриф — ${esc(a.name || "клієнтка")} · mppl.style</title>
+    return `<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Бриф – ${esc(a.name || "клієнтка")} · mppl.style</title>
 <style>body{font:14px/1.5 'Inter',system-ui,sans-serif;color:#141413;background:#f6f5f2;margin:0;padding:56px 24px}main{max-width:820px;margin:0 auto;background:#fff;padding:56px 64px;box-shadow:2px 10px 24px -10px rgba(51,43,33,.25)}
 h1,h2{font-weight:700;text-transform:uppercase;margin:0}h1{font-size:22px;line-height:1.2}h1 em{font-style:normal}.meta{color:rgba(20,20,19,.6);margin:10px 0 36px;font-size:11px;text-transform:uppercase;font-weight:700}
 h2{font-size:11px;border-bottom:1px solid #141413;padding-bottom:10px;margin:36px 0 6px}dl{margin:0}dl>div{display:grid;grid-template-columns:38% 1fr;gap:18px;padding:9px 0;border-bottom:1px solid rgba(20,20,19,.12);break-inside:avoid}
@@ -446,7 +446,7 @@ dt{color:rgba(20,20,19,.6);font-size:13px}dd{margin:0;white-space:pre-wrap}.sw{d
           const flat = { _subject: `Новий бриф: ${p.client}`, name: p.client, contact: p.contact };
           if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(p.contact.trim())) flat.email = p.contact.trim(); // Formspree: Reply-To
           p.sections.forEach((s) => s.answers.forEach((x) => (flat[`[${s.section}] ${x.question}`] = x.answer)));
-          if (hasPhotos) flat["Фото"] = "Клієнтка додала фото — вони у файлі, який вона надішле окремо.";
+          if (hasPhotos) flat["Фото"] = "Клієнтка додала фото – вони у файлі, який вона надішле окремо.";
           res = await fetch(CONFIG.SUBMIT_ENDPOINT, { method: "POST", body: JSON.stringify(flat), headers: { "Content-Type": "application/json", Accept: "application/json" } });
         }
         if (!res.ok) throw new Error("HTTP " + res.status);
@@ -456,7 +456,7 @@ dt{color:rgba(20,20,19,.6);font-size:13px}dd{margin:0;white-space:pre-wrap}.sw{d
     btn.disabled = false; btn.textContent = "Надіслати бриф";
     if (CONFIG.SUBMIT_ENDPOINT && !sent) {
       const fe = $("#form-error"); fe.hidden = false;
-      fe.textContent = "Не вдалося надіслати — перевір інтернет і спробуй ще раз. Твої відповіді збережено. Або завантаж їх файлом на наступному екрані й надішли мені напряму.";
+      fe.textContent = "Не вдалося надіслати – перевір інтернет і спробуй ще раз. Твої відповіді збережено. Або завантаж їх файлом на наступному екрані й надішли мені напряму.";
       fe.scrollIntoView({ block: "center" });
       if (!submit.failedOnce) { submit.failedOnce = true; return; }
     }
@@ -470,16 +470,16 @@ dt{color:rgba(20,20,19,.6);font-size:13px}dd{margin:0;white-space:pre-wrap}.sw{d
     const c = $("#thanks-callout"); c.hidden = true;
     const contact = `<b>${esc(CONFIG.STYLIST_CONTACT)}</b>`;
     if (!CONFIG.SUBMIT_ENDPOINT || !sent) {
-      $("#thanks-lead").textContent = "Твої відповіді готові. Залишився один крок — надіслати їх мені.";
+      $("#thanks-lead").textContent = "Твої відповіді готові. Залишився один крок – надіслати їх мені.";
       c.hidden = false; c.innerHTML = `Завантаж файл з відповідями нижче (HTML містить і фото) та надішли його мені: ${contact}.`;
     } else if (hasPhotos && !CONFIG.SEND_PHOTOS) {
       $("#thanks-lead").textContent = "Відповіді вже в мене. Я уважно прочитаю їх і напишу протягом 2 робочих днів, щоб домовитись про першу зустріч.";
-      c.hidden = false; c.innerHTML = `Фото не передаються через форму — завантаж HTML-файл нижче (у ньому є фото) і надішли мені: ${contact}.`;
+      c.hidden = false; c.innerHTML = `Фото не передаються через форму – завантаж HTML-файл нижче (у ньому є фото) і надішли мені: ${contact}.`;
     }
     $("#thanks").focus();
   }
   $("#edit").addEventListener("click", () => { state.submitted = false; save(true); show("formwrap"); renderStep(); });
-  armTwice($("#reset"), "Точно? Натисни ще раз — усе буде видалено з цього пристрою", async () => { await resetAll(); show("welcome"); initWelcome(); window.scrollTo({ top: $(".brief").getBoundingClientRect().top + window.scrollY - 20 }); });
+  armTwice($("#reset"), "Точно? Натисни ще раз – усе буде видалено з цього пристрою", async () => { await resetAll(); show("welcome"); initWelcome(); window.scrollTo({ top: $(".brief").getBoundingClientRect().top + window.scrollY - 20 }); });
 
   async function resetAll() {
     clearTimeout(saveTimer);

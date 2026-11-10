@@ -1,8 +1,9 @@
 ---
 title: Reading the runway
 module: runway analysis
+draft: true   # hidden for now
 date: 2026-11-11
-summary: Taking one runway look apart — and translating it into pieces a real client could wear.
+summary: Taking one runway look apart – and translating it into pieces a real client could wear.
 cover: ../../assets/homework/runway/show.jpg
 sheets:
   - image: ../../assets/homework/runway/silhouette.jpg
@@ -39,7 +40,7 @@ notice:
       body: Black against white keeps the shape readable from across the room. No extra colour is needed when the silhouette is this clear.
     - label: translation
       title: One piece, not the whole look.
-      body: A sharp black blazer carries the idea into real life — worn with a pleated skirt, or simply with denim on a Monday.
+      body: A sharp black blazer carries the idea into real life – worn with a pleated skirt, or simply with denim on a Monday.
 reflection:
   headline: ['wear the idea,', 'not the costume.']
   body: The exercise taught me to look for the one decision a designer made, and to find the wearable version of it for a client.

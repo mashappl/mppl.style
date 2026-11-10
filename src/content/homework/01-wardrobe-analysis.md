@@ -1,8 +1,9 @@
 ---
 title: The everyday wardrobe
 module: wardrobe analysis
+draft: true   # hidden for now
 date: 2026-11-10
-summary: Looking at what’s already there — and finding a clearer way to put it together.
+summary: Looking at what’s already there – and finding a clearer way to put it together.
 cover: ../../assets/homework/wardrobe/blazer.jpg
 sheets:
   - image: ../../assets/homework/wardrobe/blazer.jpg
