@@ -1,73 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
-import Print from '../components/Print.astro';
-import Detail from '../components/Detail.astro';
-import Spec from '../components/Spec.astro';
-import Thumb from '../components/Thumb.astro';
-import HomeworkFile from '../components/HomeworkFile.astro';
-import { t, href, getHomework, type Lang } from '../i18n';
+import Collage from '../components/Collage.astro';
+import { getHomework, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const s = t[lang];
 const entries = await getHomework();
-const latest = entries.slice(0, 3);
-const fitCover = entries.find((e) => e.data.cover)?.data.cover;
-const year = new Date().getFullYear();
+// Numbered and listed oldest-first: homework 01, 02…
+const ordered = [...entries].reverse();
 ---
 <Base lang={lang}>
-  <section class="hero">
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <h1 class="mono display">{s.hero.lines.map((l) => <span>{l}</span>)}</h1>
-        <Spec rows={[...s.hero.spec]} />
-        <a class="link-cta mono" href={href(lang, '/homework/')}>{s.hero.cta} →</a>
-      </div>
-
-      <div class="hero-board">
-        <Print class="hero-print"><Thumb cover={fitCover} empty={s.fit.empty} ratio="4 / 5" /></Print>
-        <Detail label={`${s.detail} 1/2`} leader="right" class="hero-d1">
-          <div class="crop"><Thumb cover={fitCover} empty="" ratio="1 / 1" /></div>
-        </Detail>
-        <Detail label={`${s.detail} 2/2`} leader="left" class="hero-d2">
-          <div class="capsule">
-            <p class="mono">{s.capsule.title}</p>
-            <ol>{s.capsule.items.map((it, i) => <li class="mono"><span>{String(i + 1).padStart(2, '0')}</span>{it}</li>)}</ol>
-          </div>
-        </Detail>
-      </div>
-    </div>
-  </section>
-
-  <section class="strip-section">
-    <header class="strip-head wrap">
-      <h2 class="mono display-s">{s.hw.title}</h2>
-      <p class="mono strip-count">{String(entries.length).padStart(2, '0')} / {s.hw.title}</p>
-    </header>
-    {latest.length
-      ? <div class="strip">{latest.map((e, i) => <HomeworkFile entry={e} lang={lang} i={i} />)}</div>
-      : <p class="empty mono wrap">{s.hw.empty}</p>}
-    <div class="strip-foot wrap">
-      <span></span>
-      <p class="mono para">{s.hw.sub}</p>
-      <a class="link-cta mono" href={href(lang, '/homework/')}>{s.hw.all} →</a>
-    </div>
-  </section>
-
-  <section class="plan wrap">
-    <p class="tag plan-quote">{s.plan.quote.map((l) => <span>{l}</span>)}<span class="tag-gap">{year}</span></p>
-    <p class="mono plan-note">{s.plan.note}</p>
-    <ol class="plan-list">
-      {s.plan.cards.map((c, i) => (
-        <li style={`--drop:${[0, 90, 30][i]}px`}>
-          <span class="mono plan-num">({String(i + 1).padStart(2, '0')})</span>
-          <p class="tag">{c.title.map((l) => <span>{l}</span>)}</p>
-          <p class="plan-body">{c.body}</p>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <section class="close wrap">
-    <p class="tag close-quote">{s.close.lines.map((l) => <span>{l}</span>)}</p>
-  </section>
+  <div class="collages">
+    {ordered.map((e, i) => <Collage entry={e} lang={lang} n={i + 1} variant={i % 2 === 0 ? 'a' : 'b'} />)}
+  </div>
 </Base>

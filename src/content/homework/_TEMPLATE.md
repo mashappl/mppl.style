@@ -7,6 +7,12 @@ date: 2026-11-17
 summary: One sentence that appears on the card.
 # cover: ../../assets/homework/01-cover.jpg   # optional cover image
 draft: true   # change to false (or delete this line) to publish
+# Home page collage: up to 3 photos, pinned together with safety pins.
+# sheets:
+#   - image: ../../assets/homework/01-a.jpg
+#   - image: ../../assets/homework/01-b.jpg
+#     fit: cover        # fill the whole sheet (for photos with a background)
+#   - image: ../../assets/homework/01-c.jpg
 # notes:        # up to 3 handwritten notes with arrows around the cover photo
 #   - new season
 #   - reinforced seams

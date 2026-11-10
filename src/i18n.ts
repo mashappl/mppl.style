@@ -23,6 +23,10 @@ export const t = {
     metaDesc: 'mariya popel, personal stylist in training. a paper diary of homework, closet edits and colour studies.',
     nav: { home: 'home', homework: 'homework', about: 'about', other: 'укр', otherLabel: 'Українською' },
     mood: 'mood 001',
+    descriptor: 'styling portfolio',
+    count: (n: number) => `${String(n).padStart(2, '0')} homework${n === 1 ? '' : 's'}`,
+    homeworkN: 'homework',
+    viewStudy: 'view study',
     hero: {
       lines: ['mppl.style', 'personal', 'style diary'],
       spec: [
@@ -74,6 +78,10 @@ export const t = {
     metaDesc: 'маша попель, стилістка на навчанні. паперовий щоденник домашок, розборів шаф і колірних студій.',
     nav: { home: 'головна', homework: 'домашки', about: 'про мене', other: 'eng', otherLabel: 'In English' },
     mood: 'настрій 001',
+    descriptor: 'портфоліо стиліста',
+    count: (n: number) => `${String(n).padStart(2, '0')} домашк${n === 1 ? 'а' : n > 1 && n < 5 ? 'и' : 'ок'}`,
+    homeworkN: 'домашка',
+    viewStudy: 'дивитись',
     hero: {
       lines: ['mppl.style', 'щоденник', 'стилю'],
       spec: [

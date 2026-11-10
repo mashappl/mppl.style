@@ -12,6 +12,8 @@ const homework = defineCollection({
       cover: image().optional(),          // image path relative to this file
       draft: z.boolean().default(false),  // true = hidden from the site
       notes: z.array(z.string()).max(3).optional(), // handwritten notes with arrows around the cover photo
+      // Up to 3 photo sheets for the home page collage (pinned together with safety pins).
+      sheets: z.array(z.object({ image: image(), fit: z.enum(['contain', 'cover']).default('contain') })).max(3).optional(),
       // Outfit breakdowns: a cut-out photo of the look + the pieces that make it.
       looks: z
         .array(

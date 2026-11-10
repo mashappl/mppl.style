@@ -1,20 +1,14 @@
 ---
 import '../styles/global.css';
-import { t, href, swapLang, type Lang } from '../i18n';
+import { t, href, swapLang, getHomework, type Lang } from '../i18n';
 interface Props { lang: Lang; title?: string; description?: string }
 const { lang, title, description } = Astro.props;
 const s = t[lang];
 const fullTitle = title ? `${title} · mppl.style` : 'mppl.style';
 const path = Astro.url.pathname;
 const here = path.replace(/^\/uk/, '') || '/';
-const links = [
-  { to: '/', label: s.nav.home, on: here === '/' },
-  { to: '/homework/', label: s.nav.homework, on: here.startsWith('/homework') },
-  { to: '/about/', label: s.nav.about, on: here.startsWith('/about') },
-];
-const now = new Date();
-const year = now.getFullYear();
-const month = now.toLocaleDateString(lang === 'uk' ? 'uk-UA' : 'en-GB', { month: 'long' });
+const count = (await getHomework()).length;
+const year = new Date().getFullYear();
 ---
 <!doctype html>
 <html lang={lang}>
@@ -23,26 +17,27 @@ const month = now.toLocaleDateString(lang === 'uk' ? 'uk-UA' : 'en-GB', { month:
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description ?? s.metaDesc} />
-    <meta name="theme-color" content="#f3f1ec" />
+    <meta name="theme-color" content="#f6f5f2" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" hreflang="en" href={new URL(lang === 'en' ? path : swapLang(lang, path), Astro.site)} />
     <link rel="alternate" hreflang="uk" href={new URL(lang === 'uk' ? path : swapLang(lang, path), Astro.site)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500..700&family=JetBrains+Mono:wght@300..500&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,300..800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@300..500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <a class="skip" href="#main">skip to content</a>
-    <header class="topbar">
-      <span class="mono topbar-date">{month} {year}</span>
-      <a class="wordmark mono" href={href(lang, '/')} aria-label="mppl.style home">mppl.style</a>
-      <nav class="nav mono" aria-label="main">
-        {links.map((l) => <a href={href(lang, l.to)} aria-current={l.on ? 'page' : undefined}>{l.label}</a>)}
-        <a class="nav-lang" href={swapLang(lang, path)} hreflang={lang === 'en' ? 'uk' : 'en'} lang={lang === 'en' ? 'uk' : 'en'} aria-label={s.nav.otherLabel}>{s.nav.other}</a>
+    <header class="site-head">
+      <a class="site-name" href={href(lang, '/')} aria-label="mppl.style home">mppl.style</a>
+      <span class="site-desc">{s.descriptor}</span>
+      <nav class="site-nav" aria-label="main">
+        <a href={href(lang, '/homework/')} aria-current={here.startsWith('/homework') ? 'page' : undefined}>{s.count(count)}</a>
+        <a href={href(lang, '/about/')} aria-current={here.startsWith('/about') ? 'page' : undefined}>{s.nav.about}</a>
+        <a href={swapLang(lang, path)} hreflang={lang === 'en' ? 'uk' : 'en'} lang={lang === 'en' ? 'uk' : 'en'} aria-label={s.nav.otherLabel}>{s.nav.other}</a>
       </nav>
     </header>
     <main id="main"><slot /></main>
-    <footer class="footer mono">
+    <footer class="site-foot">
       <span>{s.footer[0]}</span>
       <span>{s.footer[1]}</span>
       <span>2k{String(year).slice(2)}</span>
