@@ -1,9 +1,9 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-interface Props { cover?: ImageMetadata; empty: string }
-const { cover, empty } = Astro.props;
+interface Props { cover?: ImageMetadata; empty: string; ratio?: string }
+const { cover, empty, ratio = '4 / 5' } = Astro.props;
 ---
-<div class="hw-thumb">
-  {cover ? <Image src={cover} alt="" width={720} /> : <span class="xerox"><span class="marker">{empty}</span></span>}
+<div class="thumb" style={`aspect-ratio:${ratio}`}>
+  {cover ? <Image src={cover} alt="" width={900} /> : <span class="blank"><span class="hand">{empty}</span></span>}
 </div>

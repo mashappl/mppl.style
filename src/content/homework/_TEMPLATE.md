@@ -23,7 +23,7 @@ draft: true   # change to false (or delete this line) to publish
 
 ## The *brief*
 
-What the assignment asked for. (Words in *stars* get the yellow highlighter.)
+What the assignment asked for. (Words in *stars* turn into handwriting.)
 
 ## My *work*
 
@@ -31,7 +31,7 @@ Text, and images like this:
 
 ![Describe the image](../../assets/homework/01-moodboard.jpg)
 
-> A quote or tutor feedback shows up as a little notes card.
+> A quote or tutor feedback shows up handwritten in blue pen.
 
 ## *Reflection*
 

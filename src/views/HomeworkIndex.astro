@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Stagger from '../components/Stagger.astro';
+import Scribble from '../components/Scribble.astro';
 import HomeworkFile from '../components/HomeworkFile.astro';
 import { t, getHomework, type Lang } from '../i18n';
 interface Props { lang: Lang }
@@ -8,17 +8,17 @@ const { lang } = Astro.props;
 const s = t[lang];
 const entries = await getHomework();
 ---
-<Base lang={lang} title={s.nav.homework} ground="grid">
-  <section class="oxblood page-top">
+<Base lang={lang} title={s.nav.homework}>
+  <section class="ground-crumple page-top">
     <div class="wrap">
-      <Stagger lines={[...s.stagger, s.vol]} class="hw-stagger" />
-      <h1 class="sec-title big">
-        <span class="t-grot">{s.hw.h1}</span> <span class="t-hl"><span class="t-serif">{s.hw.h2}</span></span>
-      </h1>
-      <p class="sec-sub">{s.hw.sub}</p>
+      <div class="sec-head">
+        <h1 class="wide">{s.hw.title}</h1>
+        <p class="caps">{s.hw.sub}</p>
+        <Scribble text={s.hw.note} arrow="down-right" class="sec-note" />
+      </div>
       {entries.length
         ? <div class="hw-grid">{entries.map((e, i) => <HomeworkFile entry={e} lang={lang} i={i} />)}</div>
-        : <p class="empty marker">{s.hw.empty}</p>}
+        : <p class="empty hand">{s.hw.empty}</p>}
     </div>
   </section>
 </Base>

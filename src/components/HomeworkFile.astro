@@ -1,21 +1,25 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import Window from './Window.astro';
 import Print from './Print.astro';
 import Thumb from './Thumb.astro';
+import Spec from './Spec.astro';
 import { href, formatDate, t, type Lang } from '../i18n';
 interface Props { entry: CollectionEntry<'homework'>; lang: Lang; i: number }
 const { entry, lang, i } = Astro.props;
+const s = t[lang].hw;
 const { title, module, date, summary, cover } = entry.data;
-const tilt = [-1.6, 1.2, -0.6, 1.8, -1.1][i % 5];
-// Mix of mediums, in turn: clipped print, print in a sleeve, desktop window, photo stack.
-const medium = (['clip', 'sleeve', 'window', 'stack'] as const)[i % 4];
+const tilt = [-1.8, 1.4, -0.8, 2, -1.2][i % 5];
+// Mix of paper media, in turn.
+const holder = (['clip', 'stack', 'paperclip', 'tape'] as const)[i % 4];
+const rows = [
+  { k: s.spec.assignment, v: String(i + 1).padStart(2, '0') },
+  ...(module ? [{ k: s.spec.module, v: module }] : []),
+  { k: s.spec.date, v: formatDate(lang, date) },
+];
 ---
-<a class={`hw-file hw-${medium}`} href={href(lang, `/homework/${entry.id}/`)} style={`--tilt:${tilt}deg`}>
-  {medium === 'window'
-    ? <div class="hw-win"><span class="tape" aria-hidden="true"></span><Window file={`${entry.id}.md`}><Thumb cover={cover} empty={t[lang].hw.nopic} /></Window></div>
-    : <Print holder={medium} caption={entry.id}><Thumb cover={cover} empty={t[lang].hw.nopic} /></Print>}
-  <p class="hw-meta">{module ? `${module} · ` : ''}{formatDate(lang, date)}</p>
+<a class={`hw-file hw-${holder}`} href={href(lang, `/homework/${entry.id}/`)} style={`--tilt:${tilt}deg`}>
+  <Print holder={holder} caption={entry.id + '.jpg'}><Thumb cover={cover} empty={s.nopic} /></Print>
   <h3>{title}</h3>
   {summary && <p class="hw-sum">{summary}</p>}
+  <Spec rows={rows} />
 </a>

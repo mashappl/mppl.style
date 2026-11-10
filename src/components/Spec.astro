@@ -1,0 +1,8 @@
+---
+// Spec-sheet rows in mono caps, separated by thin rules.
+interface Props { rows: { k: string; v: string }[]; class?: string }
+const { rows, class: cls = '' } = Astro.props;
+---
+<dl class={`spec ${cls}`}>
+  {rows.map((r) => <div><dt>{r.k}:</dt><dd>{r.v}</dd></div>)}
+</dl>
