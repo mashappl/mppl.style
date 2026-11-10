@@ -6,7 +6,7 @@
 const CONFIG = {
   // URL для надсилання відповідей. Наприклад, Formspree: "https://formspree.io/f/abcdwxyz"
   // Порожній рядок = демо-режим: відповіді лише зберігаються локально й завантажуються файлом.
-  SUBMIT_ENDPOINT: "",
+  SUBMIT_ENDPOINT: "https://formspree.io/f/xljbrbek",
   // true — надсилати фото як файли (multipart). Formspree приймає файли лише на платних тарифах.
   // false — фото не надсилаються; клієнтку просять надіслати завантажений HTML-файл.
   SEND_PHOTOS: false,

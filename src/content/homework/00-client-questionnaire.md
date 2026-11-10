@@ -7,5 +7,5 @@ form: true
 meta:
   - { k: focus, v: 'Lifestyle, goals, body, colour' }
   - { k: format, v: Client brief · 11 steps }
-  - { k: status, v: Demo — nothing is sent }
+  - { k: status, v: Live — briefs arrive by email }
 ---
