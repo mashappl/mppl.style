@@ -25,7 +25,7 @@ Then open http://localhost:4321.
 - Questions: `src/data/brief.js` (Ukrainian). The home page sheets read from the same file.
 - Form logic: `public/brief/app.js` (wizard, autosave, photos, PDF/HTML/JSON downloads).
   At the top of that file, `CONFIG`:
-  - `STYLIST_CONTACT` — where clients send their answers (currently a placeholder).
+  - `STYLIST_CONTACT` — where clients send the file with their photos (contact@mariyapopel.com).
   - `SUBMIT_ENDPOINT` — leave empty for demo mode (nothing is sent), or paste a Formspree URL to receive briefs by email.
 - If you change question ids a lot, bump `LS_KEY` in `app.js` so old saved drafts don't clash.
 

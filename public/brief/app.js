@@ -11,7 +11,7 @@ const CONFIG = {
   // false — фото не надсилаються; клієнтку просять надіслати завантажений HTML-файл.
   SEND_PHOTOS: false,
   // Куди клієнтці надіслати файл з фото/відповідями (показується на екрані подяки).
-  STYLIST_CONTACT: "hello@mppl.style",
+  STYLIST_CONTACT: "contact@mariyapopel.com",
   STYLIST_NAME: "Маша"
 };
 /* ▲▲▲ CONFIG ▲▲▲ */
@@ -138,7 +138,7 @@ const CONFIG = {
           <div class="thumbs" data-thumbs="${f.id}"></div>${err(f)}</div>`;
       }
       case "consent":
-        return `<div class="field" data-id="${f.id}"><label class="consent"><input type="checkbox" id="${f.id}" name="${f.id}" ${v ? "checked" : ""} aria-describedby="${f.id}-err" aria-required="true"><span>${esc(f.label)}</span></label>${err(f)}</div>`;
+        return `<div class="field" data-id="${f.id}"><label class="consent"><input type="checkbox" id="${f.id}" name="${f.id}" ${v ? "checked" : ""} aria-describedby="${f.id}-err" ${f.required ? 'aria-required="true"' : ""}><span>${esc(f.label)}</span></label>${err(f)}</div>`;
     }
     return "";
   }
@@ -289,7 +289,7 @@ const CONFIG = {
       const er = $(`#${f.id}-err`); let msg = "";
       const v = a[f.id];
       if (f.required) {
-        if (f.type === "consent" && !v) msg = "Потрібна Твоя згода, щоб я могла працювати з відповідями.";
+        if (f.type === "consent" && !v) msg = "Потрібна твоя згода, щоб я могла працювати з відповідями.";
         else if (f.type !== "consent" && (!v || !String(v).trim())) msg = "Заповни, будь ласка, це поле.";
       }
       if (!msg && f.type === "url" && v && !/^https?:\/\/\S+\.\S+/.test(v.trim())) msg = "Схоже, посилання неповне — воно має починатися з https://";
@@ -315,7 +315,9 @@ const CONFIG = {
     state.step = Math.max(0, Math.min(STEPS.length - 1, i));
     state.maxStep = Math.max(state.maxStep, state.step);
     save(true); renderStep();
-    window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    const wrap = $("#formwrap"), bar = $(".brief-bar");
+    const top = wrap.getBoundingClientRect().top + window.scrollY - (bar ? bar.offsetHeight : 0) - 12;
+    if (window.scrollY > top) window.scrollTo({ top, behavior: "instant" });
     $("#step-title").focus({ preventScroll: true });
   }
 
@@ -334,7 +336,16 @@ const CONFIG = {
   }
   function startForm() { state.started = true; save(true); show("formwrap"); renderStep(); $("#step-title").focus(); }
   $("#start").addEventListener("click", startForm);
-  $("#restart").addEventListener("click", async () => { if (confirm("Почати з чистого аркуша? Збережені відповіді буде видалено.")) { await resetAll(); startForm(); } });
+  // Confirm by clicking twice (window.confirm is blocked in some browsers and in-app previews).
+  function armTwice(btn, askText, action) {
+    const label = btn.textContent; let armed = false, t;
+    btn.addEventListener("click", async () => {
+      if (!armed) { armed = true; btn.textContent = askText; btn.classList.add("is-armed"); t = setTimeout(() => { armed = false; btn.textContent = label; btn.classList.remove("is-armed"); }, 4000); return; }
+      clearTimeout(t); armed = false; btn.textContent = label; btn.classList.remove("is-armed");
+      await action();
+    });
+  }
+  armTwice($("#restart"), "Точно? Натисни ще раз — відповіді буде видалено", async () => { await resetAll(); startForm(); });
 
   /* ---------- Export ---------- */
   function fmt(f, v) {
@@ -465,9 +476,10 @@ dt{color:rgba(20,20,19,.6);font-size:13px}dd{margin:0;white-space:pre-wrap}.sw{d
     $("#thanks").focus();
   }
   $("#edit").addEventListener("click", () => { state.submitted = false; save(true); show("formwrap"); renderStep(); });
-  $("#reset").addEventListener("click", async () => { if (confirm("Видалити всі відповіді й фото з цього пристрою?")) { await resetAll(); show("welcome"); initWelcome(); } });
+  armTwice($("#reset"), "Точно? Натисни ще раз — усе буде видалено з цього пристрою", async () => { await resetAll(); show("welcome"); initWelcome(); window.scrollTo({ top: $(".brief").getBoundingClientRect().top + window.scrollY - 20 }); });
 
   async function resetAll() {
+    clearTimeout(saveTimer);
     state = { answers: {}, step: 0, maxStep: 0, started: false, submitted: false, updated: null };
     photos = {}; localStorage.removeItem(LS_KEY); await idb.clear();
   }

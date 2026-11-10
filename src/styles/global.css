@@ -677,3 +677,5 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 @media print {
   .site-head, .site-foot { display: none !important; }
 }
+.btn--link.is-armed { color: var(--err); }
+.btn.is-armed { border-color: var(--err); color: var(--err) !important; background: transparent; }
