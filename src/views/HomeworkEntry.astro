@@ -5,12 +5,14 @@ import Print from '../components/Print.astro';
 import Thumb from '../components/Thumb.astro';
 import Spec from '../components/Spec.astro';
 import Look from '../components/Look.astro';
+import Scribble from '../components/Scribble.astro';
 import { t, href, formatDate, type Lang } from '../i18n';
 interface Props { lang: Lang; entry: CollectionEntry<'homework'> }
 const { lang, entry } = Astro.props;
 const s = t[lang];
 const { Content } = await render(entry);
-const { title, module, date, summary, cover, looks } = entry.data;
+const { title, module, date, summary, cover, looks, notes } = entry.data;
+const arrows = ['loop-down', 'up-right', 'down'] as const;
 const rows = [...(module ? [{ k: s.hw.spec.module, v: module }] : []), { k: s.hw.spec.date, v: formatDate(lang, date) }];
 ---
 <Base lang={lang} title={title} description={summary}>
@@ -20,7 +22,12 @@ const rows = [...(module ? [{ k: s.hw.spec.module, v: module }] : []), { k: s.hw
       <h1 class="mono display-s entry-title">{title}</h1>
       {summary && <p class="hand entry-sum">{summary}</p>}
       <Spec rows={rows} />
-      {cover && <Print pin="top" class="entry-cover"><Thumb cover={cover} empty="" ratio="auto" /></Print>}
+      {cover && (
+        <div class="entry-board">
+          <Print pin="top" class="entry-cover"><Thumb cover={cover} empty="" ratio="auto" /></Print>
+          {notes?.map((n, i) => <Scribble text={n} arrow={arrows[i]} class={`entry-note entry-note-${i}`} />)}
+        </div>
+      )}
       <div class="prose"><Content /></div>
       {looks?.map((look, n) => <Look look={look} n={n} label={s.look.title} detail={s.detail} />)}
     </article>

@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import Print from '../components/Print.astro';
 import Detail from '../components/Detail.astro';
-import Scribble from '../components/Scribble.astro';
 import Spec from '../components/Spec.astro';
 import Thumb from '../components/Thumb.astro';
 import HomeworkFile from '../components/HomeworkFile.astro';
@@ -13,7 +12,6 @@ const s = t[lang];
 const entries = await getHomework();
 const latest = entries.slice(0, 3);
 const fitCover = entries.find((e) => e.data.cover)?.data.cover;
-const swatches = ['#7a4a2b', '#b36a3c', '#c99a5b', '#8a8b4c', '#4f5e3a', '#9c4a3e', '#d9b48f', '#5b3a2e', '#6d6a3c'];
 const year = new Date().getFullYear();
 ---
 <Base lang={lang}>
@@ -26,18 +24,16 @@ const year = new Date().getFullYear();
       </div>
 
       <div class="hero-board">
-        <Scribble text={s.hero.note} arrow="loop-down" class="hero-note" />
         <Print class="hero-print"><Thumb cover={fitCover} empty={s.fit.empty} ratio="4 / 5" /></Print>
         <Detail label={`${s.detail} 1/2`} leader="right" class="hero-d1">
-          <div class="palette">{swatches.map((c) => <span style={`background:${c}`}></span>)}</div>
+          <div class="crop"><Thumb cover={fitCover} empty="" ratio="1 / 1" /></div>
         </Detail>
         <Detail label={`${s.detail} 2/2`} leader="left" class="hero-d2">
           <div class="capsule">
             <p class="mono">{s.capsule.title}</p>
-            <ul>{s.capsule.items.map((it) => <li class="hand">{it}</li>)}</ul>
+            <ol>{s.capsule.items.map((it, i) => <li class="mono"><span>{String(i + 1).padStart(2, '0')}</span>{it}</li>)}</ol>
           </div>
         </Detail>
-        <Scribble text={s.palette.name} arrow="up-right" class="hero-note2" />
       </div>
     </div>
   </section>
@@ -45,13 +41,13 @@ const year = new Date().getFullYear();
   <section class="strip-section">
     <header class="strip-head wrap">
       <h2 class="mono display-s">{s.hw.title}</h2>
-      <Scribble text={s.hw.notes[0]} arrow="loop-down" class="strip-note1" />
+      <p class="mono strip-count">{String(entries.length).padStart(2, '0')} / {s.hw.title}</p>
     </header>
     {latest.length
       ? <div class="strip">{latest.map((e, i) => <HomeworkFile entry={e} lang={lang} i={i} />)}</div>
-      : <p class="empty hand wrap">{s.hw.empty}</p>}
+      : <p class="empty mono wrap">{s.hw.empty}</p>}
     <div class="strip-foot wrap">
-      <Scribble text={s.hw.notes[1]} arrow="up-right" class="strip-note2" />
+      <span></span>
       <p class="mono para">{s.hw.sub}</p>
       <a class="link-cta mono" href={href(lang, '/homework/')}>{s.hw.all} →</a>
     </div>
@@ -59,7 +55,7 @@ const year = new Date().getFullYear();
 
   <section class="plan wrap">
     <p class="tag plan-quote">{s.plan.quote.map((l) => <span>{l}</span>)}<span class="tag-gap">{year}</span></p>
-    <Scribble text={s.plan.note} arrow="down-right" class="plan-note" />
+    <p class="mono plan-note">{s.plan.note}</p>
     <ol class="plan-list">
       {s.plan.cards.map((c, i) => (
         <li style={`--drop:${[0, 90, 30][i]}px`}>
@@ -73,6 +69,5 @@ const year = new Date().getFullYear();
 
   <section class="close wrap">
     <p class="tag close-quote">{s.close.lines.map((l) => <span>{l}</span>)}</p>
-    <p class="hand close-xx">{s.close.note}</p>
   </section>
 </Base>

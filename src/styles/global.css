@@ -245,3 +245,30 @@ h1, h2, h3, p, ol, ul, dl, dd, figure { margin: 0; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ---------- editorial home (no handwriting) ---------- */
+.crop .thumb { aspect-ratio: 1; }
+.crop .thumb img { scale: 1.8; object-position: 50% 35%; }
+.crop .blank { min-height: 0; }
+.capsule ol { list-style: none; padding: 0; display: grid; gap: 6px; }
+.capsule ol li { display: flex; gap: 8px; font-size: 11px; line-height: 1.35; padding-left: 0; }
+.capsule ol li::before { content: none; }
+.capsule ol li span { flex: none; opacity: 0.6; }
+.strip-count { margin-bottom: 8px; }
+.plan-note { rotate: 0deg; top: 146px; }
+.empty.mono { font-size: 14px; }
+
+/* ---------- homework entry: notes around the cover ---------- */
+.entry-board { position: relative; margin-top: 90px; padding: 60px 0 40px; }
+.entry-board .entry-cover { margin-top: 0; }
+.entry-note { position: absolute; }
+.entry-note-0 { left: 50%; top: -30px; rotate: -4deg; }
+.entry-note-1 { right: 0; bottom: 0; rotate: 3deg; }
+.entry-note-2 { left: 0; top: 55%; rotate: -5deg; }
+.entry-note-2 .arrow-down { order: -1; margin-left: 50px; }
+@media (max-width: 760px) {
+  .entry-board { display: grid; gap: 24px; padding-top: 40px; }
+  .entry-note { position: relative; inset: auto; }
+  .entry-note-0 { order: -1; justify-self: end; }
+  .entry-note-1 { justify-self: end; }
+}

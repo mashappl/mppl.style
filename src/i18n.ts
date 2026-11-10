@@ -34,7 +34,6 @@ export const t = {
       cta: 'open the homework',
     },
     detail: 'detail',
-    palette: { name: 'soft autumn?', note: 'colour study' },
     capsule: { title: 'capsule checklist', items: ['white tee that fits', 'one good blazer', "jeans that don't fight back", 'shoes you can walk in'] },
     fit: { empty: 'fit pic coming soon' },
     hw: {
@@ -86,7 +85,6 @@ export const t = {
       cta: 'відкрити домашки',
     },
     detail: 'деталь',
-    palette: { name: "м'яка осінь?", note: 'колірна студія' },
     capsule: { title: 'капсула: чекліст', items: ['біла футболка, що сідає', 'один хороший жакет', 'джинси, які не воюють', 'взуття, в якому можна ходити'] },
     fit: { empty: 'фото скоро' },
     hw: {

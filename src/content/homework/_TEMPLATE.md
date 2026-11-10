@@ -7,6 +7,10 @@ date: 2026-11-17
 summary: One sentence that appears on the card.
 # cover: ../../assets/homework/01-cover.jpg   # optional cover image
 draft: true   # change to false (or delete this line) to publish
+# notes:        # up to 3 handwritten notes with arrows around the cover photo
+#   - new season
+#   - reinforced seams
+#   - every colour
 
 # Optional outfit breakdowns. Delete this whole block if you don't need it.
 # Best with cut-out photos (PNG with transparent background, e.g. via remove.bg or iPhone "lift subject").

@@ -11,6 +11,7 @@ const homework = defineCollection({
       summary: z.string().optional(),
       cover: image().optional(),          // image path relative to this file
       draft: z.boolean().default(false),  // true = hidden from the site
+      notes: z.array(z.string()).max(3).optional(), // handwritten notes with arrows around the cover photo
       // Outfit breakdowns: a cut-out photo of the look + the pieces that make it.
       looks: z
         .array(
