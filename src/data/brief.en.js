@@ -57,10 +57,10 @@ export const BRIEF_EN = {
             { id: "active", label: "Sport, nature, walks" },
             { id: "events", label: "Evenings, dates, events" }
           ] },
-        { id: "free_time", type: "chips", label: "How do you usually spend your free time?", options: ["Sport / yoga", "Walks", "Cafés and restaurants", "Theatre, cinema, exhibitions", "Travel", "Nature, countryside", "Parties", "Reading at home", "Time with kids", "Learning"], other: true },
-        { id: "personal_days", type: "textarea", rows: 2, label: "How often do you have dinners, dates or catch-ups with friends – and what do you usually wear?", placeholder: "For example: dinner with friends twice a month – a slip dress and a trench" },
+        { id: "free_time", type: "chips", label: "How do you usually spend your free time?", options: ["Sport", "Walks", "Cafés and restaurants", "Theatre, cinema, exhibitions", "Travel", "Nature, countryside", "Parties", "Reading at home", "Time with kids", "Learning"], other: true },
+        { id: "personal_days", type: "textarea", rows: 2, label: "How often do you have social outings – and what do you usually wear for these?", placeholder: "For example: dinner with friends twice a month – a slip dress and a trench" },
         { id: "transport", type: "chips", label: "How do you get around town?", options: ["On foot", "Own car", "Taxi", "Public transport", "Bike / scooter"] },
-        { id: "care", type: "chips", label: "Anything that affects what you wear day to day?", hint: "Only pick what applies.", options: ["Small kids", "A dog I walk", "Public speaking / filming", "Physical work", "Lots of driving", "Frequent business trips"] }
+        { id: "care", type: "chips", label: "Anything that affects what you wear day to day?", hint: "Only pick what applies.", options: ["Small kids", "A dog I walk", "Public speaking / filming", "Physical work", "Lots of driving", "Frequent business trips"], other: true }
       ]
     },
     /* ---------------------------------------------------------------- 4 */

@@ -712,3 +712,9 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 
 /* a single homework on the home page sits in the centre */
 .collage:only-child { margin-left: auto; margin-right: auto; }
+
+/* equal-size pattern / fabric tiles: long names wrap instead of stretching a column */
+.chips--tiles { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+.brief .chip.tile { min-width: 0; }
+.brief .chip.tile span.tile__img { width: 100%; }
+.brief .chip.tile span.tile__nm { overflow-wrap: anywhere; hyphens: auto; }
