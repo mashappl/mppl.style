@@ -4,6 +4,7 @@
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import FormSheet from './FormSheet.astro';
+import Pin from './Pin.astro';
 import { t, href, loc, type Lang } from '../i18n';
 interface Props { entry: CollectionEntry<'homework'>; lang: Lang; n: number; variant: 'a' | 'b' }
 const { entry, lang, n, variant } = Astro.props;
@@ -18,9 +19,10 @@ const L = loc(entry.data, lang);
     {sheets.length === 0 && entry.data.form && [0, 1, 2].map((pg) => <span class={`sheet sheet-${pg + 1}`}><FormSheet page={pg} lang={lang} /></span>)}
     {sheets.map((sh, i) => (
       <span class={`sheet sheet-${i + 1}`}>
-        <Image src={sh.image} alt="" width={720} class={sh.fit === 'cover' ? 'fit-cover' : 'fit-contain'} />
+        <Image src={sh.image} alt="" width={720} loading={n === 1 ? 'eager' : 'lazy'} class={sh.fit === 'cover' ? 'fit-cover' : 'fit-contain'} />
       </span>
     ))}
+    {(sheets.length || (entry.data.form ? 3 : 0)) > 1 && [1, 2].map((p) => <Pin class={`spin spin-${p}`} />)}
   </a>
   <div class="label study">
     <p class="study-title">{L.title}</p>

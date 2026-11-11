@@ -7,9 +7,10 @@
   --rule: rgba(35, 33, 32, 0.55);
   --olive: #4f5129;
   --blank: #e4e1da;
-  --grot: 'Roboto Flex', 'Helvetica Neue', Arial, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
-  --hand: 'Caveat', cursive;
+  --grot: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  /* one typeface site-wide: the old mono and handwriting voices now resolve to Inter */
+  --mono: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --hand: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --lift: 0 2px 2px rgba(30, 26, 20, 0.08), 0 14px 22px -10px rgba(30, 26, 20, 0.35), 0 36px 50px -30px rgba(30, 26, 20, 0.4);
 }
@@ -301,7 +302,8 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 .sheets { position: relative; display: block; }
 .collage-a .sheets { aspect-ratio: 1048 / 430; }
 .collage-b .sheets { aspect-ratio: 936 / 432; }
-.sheet { position: absolute; display: block; overflow: hidden; background: #fff; filter: drop-shadow(2px 10px 7px rgba(51, 43, 33, 0.14)); transition: rotate 0.5s var(--ease), translate 0.5s var(--ease); }
+.sheet { position: absolute; display: block; overflow: hidden; background: #fff; border-radius: 2px; filter: var(--paper-shadow); transition: rotate 0.5s var(--ease), translate 0.5s var(--ease); }
+.sheet::after, .board-print::after { content: ''; position: absolute; inset: 0; background: url('/textures/fibre.jpg') center / 520px auto; mix-blend-mode: multiply; opacity: 0.28; pointer-events: none; }
 .sheet img { width: 100%; height: 100%; }
 .sheet .fit-contain { object-fit: contain; }
 .sheet .fit-cover { object-fit: cover; }
@@ -311,18 +313,19 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 .collage-b .sheet-1 { left: 0.72%; top: 3.77%; width: 34.52%; aspect-ratio: 323 / 390; rotate: -2deg; }
 .collage-b .sheet-2 { left: 32.74%; top: 0.65%; width: 35.27%; aspect-ratio: 330 / 424; rotate: 1deg; }
 .collage-b .sheet-3 { left: 65.97%; top: 11.3%; width: 33.03%; aspect-ratio: 309 / 365; rotate: 3deg; }
-.spin { position: absolute; z-index: 2; height: auto; pointer-events: none; }
+.spin { position: absolute; z-index: 2; height: auto; pointer-events: none; filter: drop-shadow(1px 3px 2px rgba(30, 26, 20, 0.3)); transition: translate 0.5s var(--ease); }
 .collage-a .spin { width: 10.5%; }
 .collage-b .spin { width: 11.76%; }
 .collage-a .spin-1 { left: 27.76%; top: 24.4%; rotate: 4deg; }
 .collage-a .spin-2 { left: 60.56%; top: 63.4%; rotate: 10deg; }
 .collage-b .spin-1 { left: 28.87%; top: 49.2%; rotate: 9deg; }
 .collage-b .spin-2 { left: 62.42%; top: 29.4%; rotate: 14deg; }
-.sheets:hover .sheet { translate: 0 -4px; }
+.sheets:hover .sheet, .sheets:hover .spin { translate: 0 -4px; }
 .study { margin-top: 32px; max-width: 12.5em; }
 .study-title { max-width: 9em; margin-bottom: 16px; }
 .collage-a .study { margin-left: 35.6%; }
 .collage-b .study { margin-left: 68.8%; margin-top: 32px; }
+
 
 @media (max-width: 760px) {
   .site-head { grid-template-columns: 1fr auto; height: auto; padding: 24px 20px 0; row-gap: 10px; }
@@ -459,24 +462,7 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 }
 
 /* ---------- homework list ---------- */
-.hw-index { list-style: none; padding: 0; margin: 0 0 40px; }
-.hw-row { align-items: center; padding-top: 60px; padding-bottom: 60px; }
-.hw-row + .hw-row { border-top: 1px solid rgba(20, 20, 19, 0.12); }
-.hw-row-text { display: grid; gap: 18px; justify-items: start; align-content: center; }
-.hw-row-text .st-title { margin-top: 4px; }
-.hw-row-meta { opacity: 0.6; }
-.hw-stack { position: relative; display: block; aspect-ratio: 540 / 330; }
-.hw-stack-sheet { position: absolute; top: 4%; width: 36%; aspect-ratio: 4 / 5; overflow: hidden; background: #fff; filter: drop-shadow(2px 10px 7px rgba(51, 43, 33, 0.14)); transition: translate 0.5s var(--ease); }
-.hw-stack-sheet img { width: 100%; height: 100%; }
-.hw-stack-sheet .fit-contain { object-fit: contain; }
-.hw-stack-sheet .fit-cover { object-fit: cover; }
-.hw-stack-1 { left: 0; }
-.hw-stack-2 { left: 31%; top: 0; z-index: 1; }
-.hw-stack-3 { left: 62%; top: 7%; }
-.hw-stack-pin { position: absolute; z-index: 2; left: 25%; top: 32%; width: 17%; height: auto; rotate: 8deg; pointer-events: none; }
-.hw-stack:hover .hw-stack-sheet { translate: 0 -4px; }
 @media (max-width: 900px) {
-  .hw-row { row-gap: 30px; padding-top: 44px; padding-bottom: 44px; }
 }
 .study-page { overflow-x: clip; }
 @media (max-width: 900px) {
@@ -497,7 +483,6 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 .fsheet-boxes { display: flex; flex-wrap: wrap; gap: 3px 8px; font-size: clamp(4.5px, 0.45vw, 7px); text-transform: uppercase; font-weight: 600; }
 .fsheet-boxes span { display: inline-flex; align-items: center; gap: 3px; }
 .fsheet-boxes i { width: 0.9em; height: 0.9em; border: 1px solid rgba(20, 20, 19, 0.6); }
-.hw-stack-sheet .fsheet { padding: 8%; }
 
 @media (max-width: 900px) {
   .qf-section { grid-template-columns: 1fr; row-gap: 26px; padding-bottom: 54px; }
@@ -695,12 +680,13 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 
 /* welcome collage: shoes + dress + cowhide on overlapping cream prints */
 .welcome__art { grid-area: art; position: relative; width: min(100%, 420px); aspect-ratio: 420 / 640; margin: 0; }
-.wa-card { position: absolute; display: block; aspect-ratio: 4 / 5; overflow: hidden; background: #efeadf; border-radius: 3px; box-shadow: 2px 12px 18px -8px rgba(51, 43, 33, 0.32), 0 1px 2px rgba(51, 43, 33, 0.08); }
+.wa-card { position: absolute; display: block; aspect-ratio: 4 / 5; overflow: hidden; background: #efeadf; border-radius: 3px; filter: var(--paper-shadow); }
+.wa-pin { position: absolute; z-index: 4; left: 41%; top: 28%; width: 27%; height: auto; rotate: 78deg; filter: drop-shadow(1px 3px 2px rgba(30, 26, 20, 0.32)); }
 .wa-card img { width: 100%; height: 100%; display: block; }
 .wa-shoes { left: 36%; top: 0; width: 54%; rotate: 4deg; z-index: 1; padding: 6%; }
 .wa-shoes img { object-fit: contain; mix-blend-mode: multiply; transform: rotate(-22deg) scale(1.4); }
 .wa-dress { left: 4%; top: 31%; width: 56%; rotate: -4deg; z-index: 3; padding: 5%; }
-.wa-dress img { object-fit: cover; }
+.wa-dress img { object-fit: contain; mix-blend-mode: multiply; transform: scale(1.22); }
 .wa-cow { left: 30%; top: 60%; width: 60%; rotate: 3deg; z-index: 2; padding: 4%; }
 .wa-cow img { object-fit: cover; border-radius: 4px; }
 
@@ -718,3 +704,64 @@ body { background: var(--sheet-bg); background-image: none; color: var(--ink-fig
 .brief .chip.tile { min-width: 0; }
 .brief .chip.tile span.tile__img { width: 100%; }
 .brief .chip.tile span.tile__nm { overflow-wrap: anywhere; hyphens: auto; }
+
+/* ======================================================================
+   Paper: prints sit on the page with a tight contact shadow plus a longer
+   one thrown down and to the right, as if one side has lifted.
+   ====================================================================== */
+:root { --paper-shadow: drop-shadow(0 1px 1px rgba(40, 32, 22, 0.2)) drop-shadow(6px 16px 13px rgba(40, 32, 22, 0.16)); }
+
+/* homework index: each homework is a cluster of pinned prints, chained down the page */
+.board { list-style: none; padding: 30px 8.33% 0; margin: 0 0 40px; display: grid; gap: 110px; }
+.board-item { position: relative; display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); column-gap: 7%; align-items: center; }
+.board-item:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(0, 560px); }
+.board-item:nth-child(even) .board-cluster { order: 2; }
+.board-cluster { position: relative; display: block; aspect-ratio: 1; }
+.board-print { position: absolute; display: block; aspect-ratio: 4 / 5; overflow: hidden; background: #fff; border-radius: 2px; filter: var(--paper-shadow); transition: translate 0.5s var(--ease); }
+.board-print img { width: 100%; height: 100%; }
+.board-print .fit-contain { object-fit: contain; }
+.board-print .fit-cover { object-fit: cover; }
+.board-print .fsheet { padding: 8%; }
+.board-print-1 { left: 0; top: 6%; width: 58%; rotate: -1.5deg; }
+.board-print-2 { left: 53%; top: 0; width: 40%; rotate: 4deg; z-index: 2; }
+.board-print-3 { left: 50%; top: 42%; width: 44%; rotate: -3deg; z-index: 1; }
+.board-item:nth-child(even) .board-print-1 { rotate: 1.8deg; }
+.board-item:nth-child(even) .board-print-2 { rotate: -3deg; }
+.board-item:nth-child(even) .board-print-3 { rotate: 2.5deg; }
+.board-pin { position: absolute; z-index: 3; width: 19%; height: auto; pointer-events: none; filter: drop-shadow(1px 3px 2px rgba(30, 26, 20, 0.32)); transition: translate 0.5s var(--ease); }
+.board-pin-1 { left: 45%; top: 20%; rotate: -6deg; }
+.board-pin-2 { left: 63%; top: 43%; rotate: 82deg; }
+.board-pin-top { left: 19%; top: -3%; rotate: 96deg; }
+.board-item + .board-item .board-pin-top { top: -15%; }
+.board-cluster:hover .board-print, .board-cluster:hover .board-pin { translate: 0 -4px; }
+.board-cap { display: grid; gap: 18px; justify-items: start; align-content: center; }
+.board-cap .st-title { margin-top: 4px; }
+.board-date { opacity: 0.6; }
+
+@media (max-width: 760px) {
+  .board { padding: 20px 20px 0; gap: 90px; }
+  .board-item, .board-item:nth-child(even) { grid-template-columns: 1fr; row-gap: 34px; }
+  .board-item:nth-child(even) .board-cluster { order: 0; }
+}
+
+/* ======================================================================
+   Client brief, quiet version: three text sizes and no repeated labels.
+     small  11px bold caps  labels, buttons, step list, units
+     body   14px            questions, answers, hints, notes
+     title  22px bold caps  page, welcome and step headings
+   ====================================================================== */
+.brief-bar { justify-content: flex-end; }
+.brief:has(#formwrap[hidden]) .brief-bar { display: none; }
+.brief .step__kicker { display: none; }
+.brief .formnav { border-top: 0; padding-top: 0; }
+.brief .st-headline-lg, .brief .step__title { font-size: 22px; }
+.brief .st-tiny-reg, .brief .opt, .brief .sw .nm, .brief .chip.tile span.tile__nm, .brief .scale__ends, .brief .range__ends,
+.brief .facts strong, .brief .form-error, .brief .drop__text b { font-size: 11px; }
+.brief .chip span, .brief .field legend, .brief .field__label, .brief .field__hint, .brief .measure-hint, .brief .field__error,
+.brief .facts span, .brief .note, .brief .range__value, .brief .group label, .brief .drop__text, .brief .consent, .brief .callout,
+.brief .step__intro, .brief .input, .brief .textarea { font-size: 14px; }
+.brief .chip span { font-weight: 400; }
+.brief .chip input:checked + span { font-weight: 600; }
+.st-intro-brief { align-items: end; }
+.st-intro-brief h1 { margin-top: 14px; }
+.st-intro-brief > :nth-child(2) { order: 0; }

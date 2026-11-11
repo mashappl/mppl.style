@@ -4,6 +4,7 @@
 // photos, PDF/HTML/JSON downloads). This page provides the markup the script expects.
 import type { CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Pin from '../components/Pin.astro';
 import { t, href, loc, type Lang } from '../i18n';
 import { BRIEF } from '../data/brief.js';
 import { BRIEF_EN } from '../data/brief.en.js';
@@ -53,18 +54,16 @@ const ui = {
 ---
 <Base lang={lang} title={L.title} description={L.summary} back>
   <article class="study-page">
-    <header class="st-intro st-grid">
-      <a class="st-small" href={href(lang, '/homework/')}>←&nbsp;&nbsp;{s.allHomeworks}</a>
-      <p class="st-small">{s.homeworkN} {nn}{L.module && ` / ${L.module}`}</p>
-      <h1 class="st-title">{words.slice(0, mid).join(' ')}<br />{words.slice(mid).join(' ')}.</h1>
+    <header class="st-intro st-intro-brief st-grid">
       <div>
-        {L.summary && <p class="st-lede">{L.summary}</p>}
+        <p class="st-small">{s.homeworkN} {nn}{L.module && ` / ${L.module}`}</p>
+        <h1 class="st-title">{words.slice(0, mid).join(' ')}<br />{words.slice(mid).join(' ')}.</h1>
       </div>
+      {L.summary && <p class="st-lede">{L.summary}</p>}
     </header>
 
     <div class="brief" lang={lang}>
       <div class="brief-bar st-pad">
-        <span class="st-small">{ui.bar}</span>
         <div class="topbar__meta">
           <span class="savestate st-tiny-reg" id="savestate" aria-live="polite"></span>
           <span class="counter st-small" id="counter" aria-hidden="true"></span>
@@ -74,9 +73,10 @@ const ui = {
 
       <section class="screen welcome st-grid" id="welcome" aria-labelledby="welcome-title">
         <figure class="welcome__art" aria-hidden="true">
-          <span class="wa-card wa-shoes"><img src="/brief/intro/shoes.jpg" alt="" width="1000" height="1500" loading="lazy" /></span>
-          <span class="wa-card wa-cow"><img src="/brief/intro/cowhide.jpg" alt="" width="900" height="1150" loading="lazy" /></span>
-          <span class="wa-card wa-dress"><img src="/brief/intro/dress.jpg" alt="" width="800" height="1000" loading="lazy" /></span>
+          <span class="wa-card wa-shoes"><img src="/brief/intro/shoes.jpg" alt="" width="1000" height="1500" /></span>
+          <span class="wa-card wa-cow"><img src="/brief/intro/cowhide.jpg" alt="" width="900" height="1150" /></span>
+          <span class="wa-card wa-dress"><img src="/brief/intro/blazer.jpg" alt="" width="682" height="746" /></span>
+          <Pin class="wa-pin" />
         </figure>
         <div class="welcome__text">
           <h2 id="welcome-title" class="st-headline-lg">{ui.welcome.map((l) => <span>{l}</span>)}</h2>
@@ -134,10 +134,6 @@ const ui = {
       <span id="year" hidden></span>
     </div>
 
-    <footer class="st-end st-pad">
-      <a class="st-small" href={href(lang, '/homework/')}>←&nbsp;&nbsp;{s.backAll}</a>
-      <p class="st-tiny-reg">mppl.style / {s.notebook} / {nn}</p>
-    </footer>
   </article>
   <script is:inline define:vars={{ brief }}>window.BRIEF = brief;</script>
   <script is:inline src="/brief/app.js"></script>

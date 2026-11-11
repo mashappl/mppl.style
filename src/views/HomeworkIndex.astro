@@ -3,12 +3,12 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import FormSheet from '../components/FormSheet.astro';
+import Pin from '../components/Pin.astro';
 import { t, href, formatDate, getHomework, loc, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const s = t[lang];
 const ordered = [...(await getHomework())].reverse(); // homework 01 first
-const tilts = [[-3, 1.5, 4], [2, -2, -4], [-1.5, 3, -3]];
 ---
 <Base lang={lang} title={s.nav.homework}>
   <div class="study-page">
@@ -20,29 +20,32 @@ const tilts = [[-3, 1.5, 4], [2, -2, -4], [-1.5, 3, -3]];
     </header>
 
     {ordered.length === 0 && <p class="st-pad st-small">{s.hw.empty}</p>}
-    <ol class="hw-index">
+    <ol class="board">
       {ordered.map((e, i) => {
         const link = href(lang, `/homework/${e.id}/`);
-        const pics = e.data.sheets ?? (e.data.cover ? [{ image: e.data.cover, fit: 'contain' as const }] : []);
-        const tl = tilts[i % tilts.length];
+        const pics = (e.data.sheets ?? (e.data.cover ? [{ image: e.data.cover, fit: 'contain' as const }] : [])).slice(0, 3);
+        const count = pics.length || (e.data.form ? 3 : 0);
         const L = loc(e.data, lang);
         return (
-          <li class="hw-row st-grid">
-            <div class="hw-row-text">
+          <li class="board-item">
+            <a class="board-cluster" href={link} aria-label={L.title}>
+              {pics.length === 0 && e.data.form && [0, 1, 2].map((pg) => <span class={`board-print board-print-${pg + 1}`}><FormSheet page={pg} lang={lang} /></span>)}
+              {pics.map((p, j) => (
+                <span class={`board-print board-print-${j + 1}`}>
+                  <Image src={p.image} alt="" width={700} loading={i === 0 ? 'eager' : 'lazy'} class={p.fit === 'cover' ? 'fit-cover' : 'fit-contain'} />
+                </span>
+              ))}
+              <Pin class="board-pin board-pin-top" />
+              {count > 1 && <Pin class="board-pin board-pin-1" />}
+              {count > 2 && <Pin class="board-pin board-pin-2" />}
+            </a>
+            <div class="board-cap">
               <p class="st-small">{s.homeworkN} {String(i + 1).padStart(2, '0')}{L.module && ` / ${L.module}`}</p>
               <h2 class="st-title"><a href={link}>{L.title}.</a></h2>
               {L.summary && <p class="st-lede">{L.summary}</p>}
-              <p class="st-small hw-row-meta">{formatDate(lang, e.data.date)}</p>
+              <p class="st-small board-date">{formatDate(lang, e.data.date)}</p>
               <a class="st-small" href={link}>{s.viewStudy} ↗</a>
             </div>
-            <a class="hw-stack" href={link} aria-label={L.title}>
-              {pics.length === 0 && e.data.form && [0, 1, 2].map((pg) => <span class={`hw-stack-sheet hw-stack-${pg + 1}`} style={`rotate:${tl[pg]}deg`}><FormSheet page={pg} lang={lang} /></span>)}
-              {pics.map((p, j) => (
-                <span class={`hw-stack-sheet hw-stack-${j + 1}`} style={`rotate:${tl[j]}deg`}>
-                  <Image src={p.image} alt="" width={500} class={p.fit === 'cover' ? 'fit-cover' : 'fit-contain'} />
-                </span>
-              ))}
-            </a>
           </li>
         );
       })}

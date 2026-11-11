@@ -10,8 +10,7 @@ uk:
   summary: Перша розмова – на папері. Бриф, який нова клієнтка заповнює до нашої зустрічі – одинадцять коротких розділів, приблизно двадцять хвилин.
 sheets:
   - image: ../../assets/homework/brief/shoes.jpg
-  - image: ../../assets/homework/brief/dress.jpg
-    fit: cover
+  - image: ../../assets/homework/brief/blazer.jpg
   - image: ../../assets/homework/brief/cowhide.jpg
     fit: cover
 ---

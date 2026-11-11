@@ -1,0 +1,9 @@
+---
+// A photographed safety pin (public/pins/pin.png). Renders nothing until that file exists,
+// so the pages stay clean while the photo is missing.
+import { existsSync } from 'node:fs';
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+const has = existsSync(new URL('../../public/pins/pin.png', import.meta.url));
+---
+{has && <img class={cls} src="/pins/pin.png" alt="" loading="lazy" />}

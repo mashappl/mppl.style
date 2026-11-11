@@ -18,12 +18,14 @@ const year = new Date().getFullYear();
     <title>{fullTitle}</title>
     <meta name="description" content={description ?? s.metaDesc} />
     <meta name="theme-color" content="#f6f5f2" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="alternate" hreflang="en" href={new URL(lang === 'en' ? path : swapLang(lang, path), Astro.site)} />
     <link rel="alternate" hreflang="uk" href={new URL(lang === 'uk' ? path : swapLang(lang, path), Astro.site)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@300..500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <a class="skip" href="#main">skip to content</a>
